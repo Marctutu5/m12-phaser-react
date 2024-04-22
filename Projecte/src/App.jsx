@@ -1,58 +1,37 @@
 import { useRef, useState } from 'react';
-
 import Phaser from 'phaser';
 import { PhaserGame } from './game/PhaserGame';
+import { useAuth } from './auth/AuthProvider'; // Importa el hook de autenticación
+import Login from './auth/Login'; // Asegúrate de tener este componente
 
-function App ()
-{
-    // The sprite can only be moved in the MainMenu Scene
+function App() {
+    const { user } = useAuth(); // Usa el contexto de autenticación
     const [canMoveSprite, setCanMoveSprite] = useState(true);
-    
-    //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef();
     const [spritePosition, setSpritePosition] = useState({ x: 0, y: 0 });
 
     const changeScene = () => {
-
         const scene = phaserRef.current.scene;
-
-        if (scene)
-        {
+        if (scene) {
             scene.changeScene();
         }
-    }
+    };
 
     const moveSprite = () => {
-
         const scene = phaserRef.current.scene;
-
-        if (scene && scene.scene.key === 'MainMenu')
-        {
-            // Get the update logo position
+        if (scene && scene.scene.key === 'MainMenu') {
             scene.moveLogo(({ x, y }) => {
-
                 setSpritePosition({ x, y });
-
             });
         }
-    }
+    };
 
     const addSprite = () => {
-
         const scene = phaserRef.current.scene;
-
-        if (scene)
-        {
-            // Add more stars
+        if (scene) {
             const x = Phaser.Math.Between(64, scene.scale.width - 64);
             const y = Phaser.Math.Between(64, scene.scale.height - 64);
-
-            //  `add.sprite` is a Phaser GameObjectFactory method and it returns a Sprite Game Object instance
             const star = scene.add.sprite(x, y, 'star');
-
-            //  ... which you can then act upon. Here we create a Phaser Tween to fade the star sprite in and out.
-            //  You could, of course, do this from within the Phaser Scene code, but this is just an example
-            //  showing that Phaser objects and systems can be acted upon from outside of Phaser itself.
             scene.add.tween({
                 targets: star,
                 duration: 500 + Math.random() * 1000,
@@ -61,34 +40,31 @@ function App ()
                 repeat: -1
             });
         }
-    }
+    };
 
     // Event emitted from the PhaserGame component
     const currentScene = (scene) => {
-
         setCanMoveSprite(scene.scene.key !== 'MainMenu');
-        
+    };
+
+    // Renderiza el login si no hay usuario logueado
+    if (!user) {
+        return <Login onLoginSuccess={() => console.log("Logged in successfully")} />;
     }
 
     return (
         <div id="app">
             <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
             <div>
-                <div>
-                    <button className="button" onClick={changeScene}>Change Scene</button>
-                </div>
-                <div>
-                    <button disabled={canMoveSprite} className="button" onClick={moveSprite}>Toggle Movement</button>
-                </div>
+                <button className="button" onClick={changeScene}>Change Scene</button>
+                <button disabled={canMoveSprite} className="button" onClick={moveSprite}>Toggle Movement</button>
                 <div className="spritePosition">Sprite Position:
                     <pre>{`{\n  x: ${spritePosition.x}\n  y: ${spritePosition.y}\n}`}</pre>
                 </div>
-                <div>
-                    <button className="button" onClick={addSprite}>Add New Sprite</button>
-                </div>
+                <button className="button" onClick={addSprite}>Add New Sprite</button>
             </div>
         </div>
-    )
+    );
 }
 
-export default App
+export default App;
