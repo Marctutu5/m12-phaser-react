@@ -20,8 +20,10 @@ function Login({ onLoginSuccess }) {
       const response = await AuthService.login(email, password);
       setLoading(false);
       console.log('Token:', response.authToken); // Mostrar el token en la consola
+      // Guardar el token de sesión en localStorage
+      localStorage.setItem('authToken', response.authToken);
       onLoginSuccess(response); // Llamar al callback de éxito
-      navigate('/game'); // Redirigir a la página deseada, ajusta la ruta según necesites
+      navigate('/home'); // Redirigir a la página deseada, ajusta la ruta según necesites
     } catch (e) {
       setLoading(false);
       setError('Login Failed: ' + e.message);
