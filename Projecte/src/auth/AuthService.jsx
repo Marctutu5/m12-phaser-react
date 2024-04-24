@@ -1,5 +1,10 @@
 const API_URL = 'http://127.0.0.1:8000/api';
 
+const getToken = () => {
+  const fullToken = localStorage.getItem('authToken');
+  return fullToken ? fullToken.split('|')[1] : null;
+};
+
 const login = async (email, password) => {
   const response = await fetch(`${API_URL}/login`, {
     method: 'POST',
@@ -9,9 +14,9 @@ const login = async (email, password) => {
     body: JSON.stringify({ email, password }),
   });
 
-  const data = await response.json(); // Capturar la respuesta como JSON
+  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.message || 'Login failed'); // Usar el mensaje del servidor si está disponible
+    throw new Error(data.message || 'Login failed');
   }
 
   return data;
@@ -26,15 +31,16 @@ const register = async (name, email, password) => {
     body: JSON.stringify({ name, email, password }),
   });
 
-  const data = await response.json(); // Capturar la respuesta como JSON
+  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.message || 'Registration failed'); // Usar el mensaje del servidor si está disponible
+    throw new Error(data.message || 'Registration failed');
   }
 
   return data;
 };
 
-const logout = async (token) => {
+const logout = async () => {
+  const token = getToken();
   const response = await fetch(`${API_URL}/logout`, {
     method: 'POST',
     headers: {
@@ -43,12 +49,30 @@ const logout = async (token) => {
     },
   });
 
-  const data = await response.json(); // Capturar la respuesta como JSON
+  const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.message || 'Logout failed'); // Usar el mensaje del servidor si está disponible
+    throw new Error(data.message || 'Logout failed');
   }
 
   return data;
 };
 
-export default { login, register, logout };
+const getUserInfo = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/user`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch user info');
+  }
+
+  return data;
+};
+
+export default { login, register, logout, getUserInfo };

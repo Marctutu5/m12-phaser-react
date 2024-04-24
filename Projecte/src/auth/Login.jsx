@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import AuthService from './AuthService';
-import { useNavigate } from 'react-router-dom'; // Asegúrate de tener react-router-dom instalado
+import { useNavigate } from 'react-router-dom';
 
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Hook para navegar
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -19,11 +20,9 @@ function Login({ onLoginSuccess }) {
     try {
       const response = await AuthService.login(email, password);
       setLoading(false);
-      console.log('Token:', response.authToken); // Mostrar el token en la consola
-      // Guardar el token de sesión en localStorage
       localStorage.setItem('authToken', response.authToken);
-      onLoginSuccess(response); // Llamar al callback de éxito
-      navigate('/home'); // Redirigir a la página deseada, ajusta la ruta según necesites
+      onLoginSuccess(response);
+      navigate('/home');
     } catch (e) {
       setLoading(false);
       setError('Login Failed: ' + e.message);
@@ -31,26 +30,35 @@ function Login({ onLoginSuccess }) {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input
-        type="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        placeholder="Email"
-        disabled={loading}
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        placeholder="Password"
-        disabled={loading}
-      />
-      <button onClick={handleLogin} disabled={loading}>Log In</button>
-      {loading && <p>Loading...</p>}
-      {error && <div>{error}</div>}
-    </div>
+    <Container style={{ maxWidth: '400px', marginTop: '50px' }}>
+      <h2 className="text-center">Login</h2>
+      <Form>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            disabled={loading}
+          />
+        </Form.Group>
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            disabled={loading}
+          />
+        </Form.Group>
+        <Button variant="primary" onClick={handleLogin} disabled={loading} block>
+          {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Log In'}
+        </Button>
+        {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
+      </Form>
+    </Container>
   );
 }
 
