@@ -5,7 +5,7 @@ function Footer() {
   return (
     <footer className="footer">
       <Container>
-        <p className="text-center text-muted my-3">This is the footer</p>
+        <p className="text-center text-muted my-3">©2024 RiftWard</p>
       </Container>
     </footer>
   );

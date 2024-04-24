@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import AuthService from './AuthService';
 import { useNavigate } from 'react-router-dom';
+import AuthToggle from './component/AuthToggle';
+import './css/Login.css';
 
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
@@ -34,7 +36,7 @@ function Login({ onLoginSuccess }) {
       <h2 className="text-center">Login</h2>
       <Form>
         <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             placeholder="Enter email"
@@ -57,6 +59,7 @@ function Login({ onLoginSuccess }) {
           {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Log In'}
         </Button>
         {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
+        <AuthToggle isRegisterView={false} /> {/* Botón para cambiar a la vista de registro */}
       </Form>
     </Container>
   );

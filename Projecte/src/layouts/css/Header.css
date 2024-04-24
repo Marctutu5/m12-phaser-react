@@ -1,0 +1,40 @@
+/* Estilos para el header */
+.navbar {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Alinear el contenido del navbar */
+  .navbar-brand {
+    margin-left: 1rem;
+  }
+  
+  .navbar-nav {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Alinear el contenido a la derecha */
+  .navbar-nav.right {
+    justify-content: flex-end;
+  }
+  
+  /* Estilo para el texto de bienvenida */
+  .navbar-text {
+    color: #6c757d;
+  }
+  
+  /* Estilo para el botón de logout */
+  .navbar .btn {
+    margin-left: 10px;
+  }
+  
+  /* Ajustar estilos para pantallas pequeñas */
+  @media (max-width: 767px) {
+    .navbar-nav {
+      width: auto;
+      justify-content: flex-start;
+    }
+  }
+  
+  
