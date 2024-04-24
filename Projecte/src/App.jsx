@@ -1,6 +1,6 @@
 // src/App.jsx
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './auth/Login';
 import Register from './auth/Register';
@@ -15,7 +15,6 @@ import PublicRoute from './routes/PublicRoute';
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'));
   const [userName, setUserName] = useState(''); // Agregado para almacenar el nombre del usuario
-
   useEffect(() => {
     if (authToken) {
       loadUserData(authToken);
@@ -50,7 +49,7 @@ function App() {
         <Route path="/" element={<Navigate to={authToken ? "/game" : "/login"} />} />
         <Route path="/login" element={<PublicRoute isAuthenticated={!!authToken}><Login onLoginSuccess={handleLoginSuccess} /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute isAuthenticated={!!authToken}><Register onLoginSuccess={handleLoginSuccess} /></PublicRoute>} />
-        <Route path="/game" element={<ProtectedRoute isAuthenticated={!!authToken}><PhaserGame /></ProtectedRoute>} />
+        <Route path="/game" element={<ProtectedRoute isAuthenticated={!!authToken}><PhaserGame  /></ProtectedRoute>} />
         <Route path="/home" element={<ProtectedRoute isAuthenticated={!!authToken}><Home userName={userName} /></ProtectedRoute>} />
       </Routes>
       <Footer />
