@@ -11,7 +11,13 @@ const config = {
     backgroundColor: '#028af8',
     scene: [
         MainScene
-    ]
+    ],
+    physics:{
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 0 }
+        }
+    }
 };
 
 const StartGame = (parent) => {
