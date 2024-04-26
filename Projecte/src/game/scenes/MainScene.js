@@ -132,7 +132,7 @@ export default class MainScene extends Scene {
 
     preload() {
         // Carga del tileset y del archivo JSON del mapa
-        this.load.image('tileset', 'assets/tilemap32x32.png');
+        this.load.image('tileset', 'assets/fullextruded2.png');
         this.load.tilemapTiledJSON('map', 'assets/Far_Away_Town.tmj');
 
         this.load.spritesheet('prota',
@@ -149,29 +149,29 @@ export default class MainScene extends Scene {
         // Creación del mapa basado en el archivo JSON cargado
         const map = this.make.tilemap({ key: 'map' });
         this.map = map;
-        const tileset = map.addTilesetImage('tilemap32x32', 'tileset');
+        const tileset = map.addTilesetImage('tilemap32x32', 'tileset', 16, 16, 1, 2);
 
         // Capas del mapa
-        const GroundLayer = map.createLayer('Ground', tileset, 0, 0).setDepth(0);
+        const GroundLayer = map.createLayer('Ground', tileset, -256, -256).setDepth(0);
         const DecorsLayer = map.createLayer('Decors', tileset, 256, 0).setDepth(8);
         const HousesLayer = map.createLayer('Houses', tileset, 0, 0).setDepth(7);
-        const Tree1Layer = map.createLayer('Tree1', tileset, -256, 0).setDepth(6);
-        const Tree2Layer = map.createLayer('Tree2', tileset, -256, 0).setDepth(5);
-        const Tree3Layer = map.createLayer('Tree3', tileset, 0, 0).setDepth(4);
+        const Tree1Layer = map.createLayer('Tree1', tileset, -256, -256).setDepth(6);
+        const Tree2Layer = map.createLayer('Tree2', tileset, -256, -256).setDepth(5);
+        const Tree3Layer = map.createLayer('Tree3', tileset, -256, -256).setDepth(4);
         const LonggrassLayer = map.createLayer('Longgrass', tileset, 0, 0).setDepth(3);
-        const Houses2Layer = map.createLayer('Houses2', tileset, 256, 0).setDepth(2);
+        const Houses2Layer = map.createLayer('Houses2', tileset, 256, ).setDepth(2);
         const AguaLayer = map.createLayer('Agua', tileset, 0, 0).setDepth(1);
         const ColliderLayer = map.createLayer('Colliders', tileset, 0, 0).setDepth(-1);
         const OverlapLayer = map.createLayer('Overlap', tileset, 0, 0).setDepth(10);
 
 
 
-        player = this.physics.add.sprite(8,64,'prota')
+        player = this.physics.add.sprite(24,64,'prota')
         potions = this.physics.add.sprite(40,72,'potions')
         potions.collected = false
         potions.id = 1
         player.setDepth(9);
-        potions.setDepth(9);
+        potions.setDepth(8);
         this.collectibleObjects.push(this.potions);
         this.cameras.main.setZoom(3);
         this.cameras.main.startFollow(player);
