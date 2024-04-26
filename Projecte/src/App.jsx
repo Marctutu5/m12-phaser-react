@@ -1,11 +1,12 @@
 // src/App.jsx
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './css/App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './auth/Login';
 import Register from './auth/Register';
 import Home from './pages/Home';
-import Profile from './pages/Profile';
+import Backpack from './pages/Backpack';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import { PhaserGame } from './game/PhaserGame';
@@ -53,7 +54,7 @@ function App() {
         <Route path="/register" element={<PublicRoute isAuthenticated={!!authToken}><Register onLoginSuccess={handleLoginSuccess} /></PublicRoute>} />
         <Route path="/game" element={<ProtectedRoute isAuthenticated={!!authToken}><PhaserGame /></ProtectedRoute>} />
         <Route path="/home" element={<ProtectedRoute isAuthenticated={!!authToken}><Home userName={userName} /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute isAuthenticated={!!authToken}><Profile userName={userName} /></ProtectedRoute>} />
+        <Route path="/backpack" element={<ProtectedRoute isAuthenticated={!!authToken}><Backpack userName={userName} /></ProtectedRoute>} />
       </Routes>
       <Footer />
     </Router>

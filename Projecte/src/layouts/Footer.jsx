@@ -3,9 +3,9 @@ import { Container } from 'react-bootstrap';
 
 function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer bg-light py-3"> {/* Se añade un fondo claro y padding vertical */}
       <Container>
-        <p className="text-center text-muted my-3">©2024 RiftWard</p>
+        <p className="text-center text-muted">©2024 Riftward: Guardians of Mithra</p>
       </Container>
     </footer>
   );

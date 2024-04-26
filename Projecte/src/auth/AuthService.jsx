@@ -75,4 +75,42 @@ const getUserInfo = async () => {
   return data;
 };
 
-export default { login, register, logout, getUserInfo };
+const getWallet = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/wallet`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch wallet data');
+  }
+
+  return data;
+};
+
+const getBackpack = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/backpack`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch backpack data');
+  }
+
+  return data;
+};
+
+
+
+export default { login, register, logout, getUserInfo, getWallet, getBackpack };
