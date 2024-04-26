@@ -75,6 +75,35 @@ const getUserInfo = async () => {
   return data;
 };
 
+const updateBackpack = async ( itemId, quantity) => {
+  const url = `${API_URL}/backpack/update`;
+  const token = getToken();
+  const data = {
+      item_id: itemId,
+      quantity: quantity
+  };
+  const options = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+  };
+
+  try {
+      const response = await fetch(url, options);
+      if (response.ok) {
+          const responseData = await response.json();
+          console.log('Respuesta del servidor:', responseData);
+      } else {
+          console.error('Error al enviar la solicitud:', response.status);
+      }
+  } catch (error) {
+      console.error('Error al procesar la solicitud:', error);
+  }
+}
+
 const getWallet = async () => {
   const token = getToken();
   const response = await fetch(`${API_URL}/wallet`, {
@@ -113,4 +142,4 @@ const getBackpack = async () => {
 
 
 
-export default { login, register, logout, getUserInfo, getWallet, getBackpack };
+export default { login, register, logout, getUserInfo, updateBackpack, getWallet, getBackpack };

@@ -17,7 +17,6 @@ import PublicRoute from './routes/PublicRoute';
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'));
   const [userName, setUserName] = useState(''); // Agregado para almacenar el nombre del usuario
-
   useEffect(() => {
     if (authToken) {
       loadUserData(authToken);
@@ -52,7 +51,7 @@ function App() {
         <Route path="/" element={<Navigate to={authToken ? "/game" : "/login"} />} />
         <Route path="/login" element={<PublicRoute isAuthenticated={!!authToken}><Login onLoginSuccess={handleLoginSuccess} /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute isAuthenticated={!!authToken}><Register onLoginSuccess={handleLoginSuccess} /></PublicRoute>} />
-        <Route path="/game" element={<ProtectedRoute isAuthenticated={!!authToken}><PhaserGame /></ProtectedRoute>} />
+        <Route path="/game" element={<ProtectedRoute isAuthenticated={!!authToken}><PhaserGame  /></ProtectedRoute>} />
         <Route path="/home" element={<ProtectedRoute isAuthenticated={!!authToken}><Home userName={userName} /></ProtectedRoute>} />
         <Route path="/backpack" element={<ProtectedRoute isAuthenticated={!!authToken}><Backpack userName={userName} /></ProtectedRoute>} />
       </Routes>
