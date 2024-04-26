@@ -1,8 +1,48 @@
 import { Scene } from 'phaser';
+import AuthService from '../../auth/AuthService';
 let player = ""
+let potions = ""
+let overlapWithItem = false
 let pie ="izquierdo"
 
 export default class MainScene extends Scene {
+
+      
+
+    collectItem(player, item, collider) {
+        // Obtener las coordenadas del jugador y del ítem
+        const playerTileX = Math.floor(player.x / this.map.tileWidth);
+        const playerTileY = Math.floor(player.y / this.map.tileHeight);
+        const itemTileX = Math.floor(item.x / this.map.tileWidth);
+        const itemTileY = Math.floor(item.y / this.map.tileHeight);
+    
+        // Dirección en la que el jugador está mirando
+        const playerDirection = player.looking;
+    
+        // Verificar si el jugador está en una posición adyacente al ítem
+        const isAdjacent = (
+            (playerDirection === "up" && playerTileX === itemTileX && playerTileY === itemTileY + 1) ||
+            (playerDirection === "down" && playerTileX === itemTileX && playerTileY === itemTileY - 1) ||
+            (playerDirection === "left" && playerTileX === itemTileX + 1 && playerTileY === itemTileY) ||
+            (playerDirection === "right" && playerTileX === itemTileX - 1 && playerTileY === itemTileY)
+        );
+    
+        // Verificar si se ha pulsado la tecla Q
+        const qKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        if (isAdjacent && Phaser.Input.Keyboard.JustDown(qKey) && item.collected == false) {
+            // Destruir el ítem
+            item.destroy();
+            item.collected = true
+            AuthService.updateBackpack(item.id, 1);
+            // Eliminar la colisión entre el jugador y el ítem
+            this.physics.world.removeCollider(collider);
+            // Realizar cualquier otra acción que desees al recoger el ítem
+            // Por ejemplo, aumentar la cantidad de ítems recolectados, etc.
+        }
+    }
+    
+    
+    
 
     tryMovePlayer(deltaX, deltaY) {
         const nextX = player.x + deltaX;
@@ -10,12 +50,21 @@ export default class MainScene extends Scene {
     
         const tileX = Math.floor(nextX / this.map.tileWidth);
         const tileY = Math.floor(nextY / this.map.tileHeight);
-        const tile = this.map.getTileAt(tileX, tileY, true, 'Decors');
-    
-        if (!tile || !tile.collides) {
+        const tile = this.map.getTileAt(tileX, tileY, true, 'Colliders');
+        
+        // Verificar si el jugador y el objeto "potions" están en la misma posición
+        if (potions.collected == false){
+            overlapWithItem = (Math.floor(potions.x / this.map.tileWidth) === tileX && Math.floor(potions.y / this.map.tileHeight) === tileY);
+           
+        } else {
+            overlapWithItem = false
+            
+        }
+        if ((!tile || !tile.collides) && !overlapWithItem) {
             this.movePlayer(deltaX, deltaY);
         }
     }
+    
     
     tryMovePlayerRun(deltaX, deltaY) {
         const nextX = player.x + deltaX;
@@ -23,9 +72,16 @@ export default class MainScene extends Scene {
     
         const tileX = Math.floor(nextX / this.map.tileWidth);
         const tileY = Math.floor(nextY / this.map.tileHeight);
-        const tile = this.map.getTileAt(tileX, tileY, true, 'Decors');
+        const tile = this.map.getTileAt(tileX, tileY, true, 'Colliders');
+        if (potions.collected == false){
+            overlapWithItem = (Math.floor(potions.x / this.map.tileWidth) === tileX && Math.floor(potions.y / this.map.tileHeight) === tileY);
+           
+        } else {
+            overlapWithItem = false
+            
+        }
     
-        if (!tile || !tile.collides) {
+        if ((!tile || !tile.collides) && !overlapWithItem) {
             this.movePlayerRun(deltaX, deltaY);
         }
     }
@@ -71,6 +127,7 @@ export default class MainScene extends Scene {
         super('MainScene');
         this.moveDistance = 16;
         this.canMove = true;
+        this.collectibleObjects = [];
     }
 
     preload() {
@@ -81,6 +138,10 @@ export default class MainScene extends Scene {
         this.load.spritesheet('prota',
         'assets/Prota.png',
         { frameWidth: 32, frameHeight: 32, }
+        );
+        this.load.spritesheet('potions',
+        'assets/potions.png',
+        { frameWidth: 16, frameHeight: 16, }
         );
     }
 
@@ -100,14 +161,25 @@ export default class MainScene extends Scene {
         const LonggrassLayer = map.createLayer('Longgrass', tileset, 0, 0).setDepth(3);
         const Houses2Layer = map.createLayer('Houses2', tileset, 256, 0).setDepth(2);
         const AguaLayer = map.createLayer('Agua', tileset, 0, 0).setDepth(1);
+        const ColliderLayer = map.createLayer('Colliders', tileset, 0, 0).setDepth(-1);
+        const OverlapLayer = map.createLayer('Overlap', tileset, 0, 0).setDepth(10);
 
-        player = this.physics.add.sprite(8,16,'prota')
-        player.setDepth(3);
+
+
+        player = this.physics.add.sprite(8,64,'prota')
+        potions = this.physics.add.sprite(40,72,'potions')
+        potions.collected = false
+        potions.id = 1
+        player.setDepth(9);
+        potions.setDepth(9);
+        this.collectibleObjects.push(this.potions);
         this.cameras.main.setZoom(3);
         this.cameras.main.startFollow(player);
-        map.setCollisionBetween(1, 1000, true, 'Decors');
-        DecorsLayer.setCollisionByExclusion([-1]);
-        this.physics.add.collider(player, DecorsLayer);
+        this.cameras.main.roundPixels = true;
+        map.setCollisionBetween(1, 1000, true, 'Colliders');
+        ColliderLayer.setCollisionByExclusion([-1]);
+        this.physics.add.collider(player, ColliderLayer);
+        this.physics.add.collider(player, potions, this.collectItem, null, this);
 
 
         this.anims.create({
@@ -249,7 +321,7 @@ export default class MainScene extends Scene {
     update() {
         var cursors = this.input.keyboard.createCursorKeys();
         var shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-
+        this.collectItem(player, potions);
         if (this.canMove) {
             if (cursors.left.isDown && pie == "izquierdo" && !shiftKey.isDown) {
                 player.anims.play('left_izquierdo', true);
