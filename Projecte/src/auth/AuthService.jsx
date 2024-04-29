@@ -140,6 +140,63 @@ const getBackpack = async () => {
   return data;
 };
 
+const getPosition = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/user-position`, {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+      },
+  });
+
+  if (!response.ok) {
+      console.error('Failed to fetch position data');
+      return null;
+  }
+
+  // Intentar analizar la respuesta JSON
+  try {
+      const positionData = await response.json();
+      return positionData;
+  } catch (error) {
+      console.error('Error parsing JSON:', error);
+      return null;
+  }
+};
+
+const updatePosition = async (x, y, scene) => {
+  const url = `${API_URL}/user-position`;
+  const token = getToken();
+  const data = {
+      x: x,
+      y: y,
+      scene: scene
+  };
+  const options = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+  };
+
+  try {
+      const response = await fetch(url, options);
+      if (response.ok) {
+          const responseData = await response.json();
+          console.log('Respuesta del servidor:', responseData);
+      } else {
+          console.error('Error al enviar la solicitud:', response.status);
+      }
+  } catch (error) {
+      console.error('Error al procesar la solicitud:', error);
+  }
+}
 
 
-export default { login, register, logout, getUserInfo, updateBackpack, getWallet, getBackpack };
+
+
+
+export default { login, register, logout, getUserInfo, updateBackpack, getWallet, getBackpack, getPosition, updatePosition };
