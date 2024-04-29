@@ -163,6 +163,8 @@ export default class MainScene extends Scene {
         const AguaLayer = map.createLayer('Agua', tileset, 0, 0).setDepth(1);
         const ColliderLayer = map.createLayer('Colliders', tileset, 0, 0).setDepth(-1);
         const OverlapLayer = map.createLayer('Overlap', tileset, 0, 0).setDepth(10);
+        const Overlap2Layer = map.createLayer('Overlap2', tileset, 256, 256).setDepth(10);
+
 
 
 
