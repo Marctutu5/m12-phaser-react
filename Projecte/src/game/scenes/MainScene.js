@@ -13,23 +13,6 @@ let pie ="izquierdo"
 export default class MainScene extends Scene {
 
       
-    showPosition = async () => {
-        try {
-            const positionData = await AuthService.getPosition();
-            // Verificar si se recibió la posición del usuario
-            if (positionData) {
-                const { x, y, scene } = positionData;
-                player.x = x
-                player.y = y
-                // Hacer algo con las coordenadas x e y y el nombre de la escena
-                console.log("Posición del usuario:", x, y, scene);
-            } else {
-                console.log("No se recibió la posición del usuario");
-            }
-        } catch (error) {
-            console.error('Error al obtener la posición del usuario:', error);
-        }
-    };
     
 
     collectItem(player, item, collider) {
@@ -172,10 +155,16 @@ export default class MainScene extends Scene {
         this.canMove = true;
         this.collectibleObjects = [];
     }
+    
+    init(data) {
+        // Accede a positionData desde los datos iniciales de la escena
+        const positionData = data.positionData;
+        console.log(positionData);
+        this.positionData = positionData;
+    }
 
     preload() {
-        
-        this.showPosition()
+        this.cameras.main.setBackgroundColor('#000000');
         // Carga del tileset y del archivo JSON del mapa
         this.load.image('tileset', 'assets/fullextruded2.png');
         this.load.tilemapTiledJSON('map', 'assets/Far_Away_Town.tmj');
@@ -214,9 +203,11 @@ export default class MainScene extends Scene {
         const OverlapLayer = map.createLayer('Overlap', tileset, 0, 0).setDepth(10);
         const Overlap2Layer = map.createLayer('Overlap2', tileset, 256, 256).setDepth(10);
 
-
-
+       
         player = this.physics.add.sprite(player.x,player.y,'prota')
+        const { x, y, scene } = this.positionData;
+        player.x = x
+        player.y = y
         potions = this.physics.add.sprite(264,472,'potions');
         potion2 = this.physics.add.sprite(504,312,'potions');
         potion3 = this.physics.add.sprite(584,456,'potions');
