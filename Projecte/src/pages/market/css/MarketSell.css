@@ -1,0 +1,29 @@
+/* MarketSell.css */
+.card-img-top {
+    object-fit: cover;
+    height: 200px;
+}
+
+.selected-item {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}

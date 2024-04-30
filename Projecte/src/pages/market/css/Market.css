@@ -1,0 +1,23 @@
+/* Market.css */
+.nav-link.active {
+    font-weight: bold;
+  }
+  
+  .wallet-card {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .wallet-card .card-body {
+    padding: 20px;
+  }
+  
+  .wallet-card .card-title {
+    font-size: 1.2rem;
+  }
+  
+  .wallet-card .card-text {
+    font-size: 1.1rem;
+  }
+  

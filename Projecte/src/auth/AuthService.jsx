@@ -140,6 +140,126 @@ const getBackpack = async () => {
   return data;
 };
 
+const createListing = async (item_id, quantity, price) => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/listings`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ item_id, quantity, price }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to create listing');
+  }
+  return data;
+};
+
+const getListings = async (excludeOwn = false) => {
+  const token = getToken();
+  const url = `${API_URL}/listings${excludeOwn ? '?exclude_own=true' : ''}`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch listings');
+  }
+  return data;
+};
 
 
-export default { login, register, logout, getUserInfo, updateBackpack, getWallet, getBackpack };
+const getListing = async (id) => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/listings/${id}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Listing not found');
+  }
+  return data;
+};
+
+const cancelListing = async (id) => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/listings/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to cancel listing');
+  }
+  return data;
+};
+
+const createTransaction = async (listing_id, quantity) => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/transactions`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ listing_id, quantity }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to create transaction');
+  }
+  return data;
+};
+
+const getTransactions = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/transactions`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch transactions');
+  }
+  return data;
+};
+
+
+export default {
+  login,
+  register,
+  logout,
+  getUserInfo,
+  updateBackpack,
+  getWallet,
+  getBackpack,
+  createListing,
+  getListings,
+  getListing,
+  cancelListing,
+  createTransaction,
+  getTransactions
+};
+

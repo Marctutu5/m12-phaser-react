@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import AuthService from '../auth/AuthService';
-import { Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
+import AuthService from '../../auth/AuthService';
+import { Container, Row, Col, Card, ListGroup, Spinner } from 'react-bootstrap';
+import './css/Backpack.css';
 
 function Backpack({ userName }) {
   const [wallet, setWallet] = useState(null);
   const [backpack, setBackpack] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,6 +15,7 @@ function Backpack({ userName }) {
         setWallet(walletData);
         const backpackData = await AuthService.getBackpack();
         setBackpack(backpackData);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -27,7 +30,7 @@ function Backpack({ userName }) {
         <Col xs={12} md={12} lg={12}>
           <Card>
             <Card.Body>
-            <Card.Title className="text-center h2">Bienvenido a Riftward: Guardians of Mithra, explorador {userName}!</Card.Title>
+              <Card.Title className="text-center h2">Welcome to Riftward: Guardians of Mithra, explorer {userName}!</Card.Title>
               {wallet && (
                 <ListGroup variant="flush">
                   <ListGroup.Item>
@@ -42,11 +45,16 @@ function Backpack({ userName }) {
                   {backpack.map((item) => (
                     <Col xs={6} sm={4} md={3} className="mb-4" key={item.item.id}>
                       <Card>
-                        <Card.Img variant="top" src={item.item.photo} alt={item.item.name} style={{ maxHeight: 'auto', objectFit: 'cover' }} />
+                        <Card.Img
+                          variant="top"
+                          src={item.item.photo}
+                          alt={item.item.name}
+                          className="backpack-img"
+                        />
                         <Card.Body>
                           <Card.Title>{item.item.name}</Card.Title>
                           <Card.Text>
-                            Cantidad: {item.quantity}
+                            Quantity: {item.quantity}
                           </Card.Text>
                         </Card.Body>
                       </Card>
@@ -54,7 +62,16 @@ function Backpack({ userName }) {
                   ))}
                 </Row>
               )}
-              {!wallet && !backpack && <Card.Text>Cargando datos...</Card.Text>}
+              {loading && (
+                <div className="text-center mt-3">
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </div>
+              )}
+              {!loading && !wallet && !backpack && (
+                <Card.Text className="text-center">No data available.</Card.Text>
+              )}
             </Card.Body>
           </Card>
         </Col>
