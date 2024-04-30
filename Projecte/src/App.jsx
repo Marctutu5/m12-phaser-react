@@ -11,6 +11,7 @@ import Market from './pages/market/Market';
 import MarketBuy from './pages/market/MarketBuy';
 import MarketSell from './pages/market/MarketSell';
 import MarketManage from './pages/market/MarketManage';
+import MarketTransaction from './pages/market/MarketTransaction';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import { PhaserGame } from './game/PhaserGame';
@@ -63,6 +64,7 @@ function App() {
           <Route path="buy" element={<MarketBuy />} />
           <Route path="sell" element={<MarketSell />} />
           <Route path="manage" element={<MarketManage />} />
+          <Route path="transaction" element={<MarketTransaction />} />
         </Route>
       </Routes>
       <Footer />

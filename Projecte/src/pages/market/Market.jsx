@@ -44,6 +44,11 @@ const Market = () => {
             Manage
           </NavLink>
         </Nav.Item>
+        <Nav.Item>
+          <NavLink to="/market/transaction" className="nav-link" activeClassName="active">
+            Transactions
+          </NavLink>
+        </Nav.Item>
       </Nav>
       {loading ? ( // Mostrar spinner mientras se cargan los datos
         <div className="text-center mt-3">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from '../../auth/AuthService';
-import { Container, Row, Col, Card, Form, Button, Alert, InputGroup, FormControl, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import './css/MarketSell.css'
 
 const MarketSell = () => {
@@ -52,7 +52,7 @@ const MarketSell = () => {
   return (
     <Container className="mt-5">
       <h1 className="text-center">Sell Your Items</h1>
-      {loading ? ( // Mostrar spinner mientras se cargan los datos
+      {loading ? (
         <div className="text-center mt-3">
           <Spinner animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
@@ -81,11 +81,25 @@ const MarketSell = () => {
             <Form onSubmit={handleSubmit} className="mt-3">
               <Form.Group className="mb-3">
                 <Form.Label>Quantity</Form.Label>
-                <Form.Control type="number" name="quantity" value={listingData.quantity} onChange={handleInputChange} required />
+                <Form.Control
+                  type="number"
+                  name="quantity"
+                  value={listingData.quantity}
+                  onChange={handleInputChange}
+                  min="1"
+                  max={selectedItem.quantity}  // Asegura que no se puede ingresar un número mayor al disponible
+                  required
+                />
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Price per unit ($)</Form.Label>
-                <Form.Control type="text" name="price" value={listingData.price} onChange={handleInputChange} required />
+                <Form.Control
+                  type="text"
+                  name="price"
+                  value={listingData.price}
+                  onChange={handleInputChange}
+                  required
+                />
               </Form.Group>
               <Button variant="primary" type="submit">Create Listing</Button>
             </Form>
