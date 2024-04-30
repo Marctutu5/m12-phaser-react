@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import SaveConfirmationDialog from '../components/SaveConfirmationDialog';
 import AuthService from '../../auth/AuthService';
 let player = ""
 let potions = ""
@@ -47,12 +48,13 @@ export default class MainScene extends Scene {
         }
     }
 
-    savePosition(x, y){
-        AuthService.updatePosition(x, y, 1);
-
+    handleDialogClose() {
+        this.dialogOpen = false;
     }
     
-    
+    getPlayerCoordinates() {
+        return { x: player.x, y: player.y };
+    }
     
 
     tryMovePlayer(deltaX, deltaY) {
@@ -154,6 +156,7 @@ export default class MainScene extends Scene {
         this.moveDistance = 16;
         this.canMove = true;
         this.collectibleObjects = [];
+        this.dialogOpen = false;
     }
     
     init(data) {
@@ -184,6 +187,8 @@ export default class MainScene extends Scene {
     }
 
     create() {
+        this.saveConfirmationDialog = new SaveConfirmationDialog(this);      
+
         // Creación del mapa basado en el archivo JSON cargado
         const map = this.make.tilemap({ key: 'map' });
         this.map = map;
@@ -397,11 +402,13 @@ export default class MainScene extends Scene {
             this.collectItem(player, Item);
         }
         const sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        if (sKey.isDown) {
+        if (sKey.isDown && !this.dialogOpen && this.canMove) {
             // Acciones a realizar cuando la tecla S es presionada
             console.log('Tecla S presionada');
             // Agrega aquí la lógica que deseas ejecutar cuando la tecla S sea presionada
-            this.savePosition(player.x, player.y); // Suponiendo que savePosition es una función que guarda la posición
+            this.dialogOpen = true
+
+            this.saveConfirmationDialog.show();
         }
         if (this.canMove) {
             if (cursors.left.isDown && pie == "izquierdo" && !shiftKey.isDown) {
