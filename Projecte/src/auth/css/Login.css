@@ -1,0 +1,34 @@
+/* Estilo CSS para el login */
+.login-container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.login-container h2 {
+  text-align: center;
+}
+
+.login-form {
+  margin-top: 20px;
+}
+
+.login-form label {
+  font-weight: bold;
+}
+
+.login-form input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.login-form .btn-primary {
+  width: 100%;
+}
+
+.login-form .alert {
+  margin-top: 10px;
+}
