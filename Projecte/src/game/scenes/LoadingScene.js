@@ -1,19 +1,39 @@
 import Phaser from 'phaser';
 import AuthService from '../../auth/AuthService';
+import { cloneElement } from 'react';
 let positionData
+let startscene1 = false
+let startscene2 = false
+let collectedItems
 
 
 
 export default class LoadingScene extends Phaser.Scene {
 
+    showCollectedItems = async () => {
+    try {
+        collectedItems = await AuthService.getCollectedItems();
+        // Verificar si se recibieron los items recolectados por el usuario
+        if (collectedItems) {
+            startscene1 = true
+            // Hacer algo con los items recolectados, como mostrarlos en el juego
+        } else {
+            console.log("No se recibieron los items recolectados del usuario");
+        }
+    } catch (error) {
+        console.error('Error al obtener los items recolectados del usuario:', error);
+    }
+};
+
+
     showPosition = async () => {
         try {
-            const positionData = await AuthService.getPosition();
+            positionData = await AuthService.getPosition();
             // Verificar si se recibió la posición del usuario
             if (positionData) {
 
                 
-                this.scene.start('MainScene', { positionData });
+                startscene2 = true
                 // Hacer algo con las coordenadas x e y y el nombre de la escena
     
             } else {
@@ -30,6 +50,7 @@ export default class LoadingScene extends Phaser.Scene {
 
     preload(){
         this.showPosition()
+        this.showCollectedItems()
         // Configura el fondo negro
         this.cameras.main.setBackgroundColor('#000000');
 
@@ -47,6 +68,11 @@ export default class LoadingScene extends Phaser.Scene {
 
     }
     update(){
+        console.log(startscene1, startscene2)
+        if (startscene1 && startscene2){
+            console.log(positionData,collectedItems)
+            this.scene.start('MainScene', { positionData, collectedItems });
+        }
 
     }
 }

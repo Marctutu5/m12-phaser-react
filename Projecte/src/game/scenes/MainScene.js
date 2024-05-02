@@ -414,7 +414,7 @@ export default class MainScene extends Scene {
 
             this.saveConfirmationDialog.show();
         }
-        if (this.canMove) {
+        if (this.canMove && !this.dialogOpen) {
             if (cursors.left.isDown && pie == "izquierdo" && !shiftKey.isDown) {
                 player.anims.play('left_izquierdo', true);
                 player.looking = "left"
