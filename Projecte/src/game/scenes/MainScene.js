@@ -223,9 +223,13 @@ export default class MainScene extends Scene {
         for (const Item of Items) {
             Item.collected = false
             Item.setDepth(8);
-            count = count+1
-            Item.id = count
         }
+        potions.id = 1
+        fruits.id = 2
+        potion2.id = 3
+        potion3.id = 4
+        potion4.id = 5
+        
         player.setDepth(9);
         this.cameras.main.setZoom(3);
         this.cameras.main.startFollow(player);
