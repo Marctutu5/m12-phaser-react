@@ -1,0 +1,14 @@
+/* MarketBuy.css */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    border: none;
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 200px;
+}
+
+.button {
+    width: 100%;
+}

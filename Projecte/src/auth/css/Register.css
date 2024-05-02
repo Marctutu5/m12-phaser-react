@@ -1,0 +1,35 @@
+/* Estilo CSS para el registro */
+.register-container {
+    max-width: 400px;
+    margin: 20px auto; /* Margen en la parte superior e inferior */
+  }
+  
+  .register-form {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .register-form h2 {
+    text-align: center;
+  }
+  
+  .register-form label {
+    font-weight: bold;
+  }
+  
+  .register-form input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .register-form .btn-primary {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .register-form .alert {
+    margin-top: 10px;
+  }
+  

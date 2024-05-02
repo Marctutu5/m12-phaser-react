@@ -1,0 +1,13 @@
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa; /* Fondo claro */
+    padding-top: 20px; /* Padding vertical */
+    padding-bottom: 20px; /* Padding vertical */
+  }
+  
+  .container {
+    width: 100%;
+  }
+  

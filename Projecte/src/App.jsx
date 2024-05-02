@@ -5,8 +5,13 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './auth/Login';
 import Register from './auth/Register';
-import Home from './pages/Home';
-import Backpack from './pages/Backpack';
+import Home from './pages/home/Home';
+import Backpack from './pages/backpack/Backpack';
+import Market from './pages/market/Market';
+import MarketBuy from './pages/market/MarketBuy';
+import MarketSell from './pages/market/MarketSell';
+import MarketManage from './pages/market/MarketManage';
+import MarketTransaction from './pages/market/MarketTransaction';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import { PhaserGame } from './game/PhaserGame';
@@ -54,6 +59,13 @@ function App() {
         <Route path="/game" element={<ProtectedRoute isAuthenticated={!!authToken}><PhaserGame  /></ProtectedRoute>} />
         <Route path="/home" element={<ProtectedRoute isAuthenticated={!!authToken}><Home userName={userName} /></ProtectedRoute>} />
         <Route path="/backpack" element={<ProtectedRoute isAuthenticated={!!authToken}><Backpack userName={userName} /></ProtectedRoute>} />
+        <Route path="/market" element={<ProtectedRoute isAuthenticated={!!authToken}><Market /></ProtectedRoute>}>
+          <Route index element={<Navigate replace to="buy" />} />
+          <Route path="buy" element={<MarketBuy />} />
+          <Route path="sell" element={<MarketSell />} />
+          <Route path="manage" element={<MarketManage />} />
+          <Route path="transaction" element={<MarketTransaction />} />
+        </Route>
       </Routes>
       <Footer />
     </Router>
