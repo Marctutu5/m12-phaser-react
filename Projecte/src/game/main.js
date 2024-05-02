@@ -1,4 +1,5 @@
 import MainScene from './scenes/MainScene';
+import LoadingScene from './scenes/LoadingScene';
 import Phaser from 'phaser';
 
 // Find out more information about the Game Config at:
@@ -10,6 +11,7 @@ const config = {
     parent: 'game-container',
     backgroundColor: '#028af8',
     scene: [
+        LoadingScene,
         MainScene
     ],
     physics:{

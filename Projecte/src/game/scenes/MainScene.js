@@ -1,13 +1,20 @@
 import { Scene } from 'phaser';
+import SaveConfirmationDialog from '../components/SaveConfirmationDialog';
 import AuthService from '../../auth/AuthService';
 let player = ""
 let potions = ""
-let overlapWithItem = false
+let potion2 = ""
+let potion3 = ""
+let potion4 = ""
+let fruits = ""
+let count = 0
 let pie ="izquierdo"
+
 
 export default class MainScene extends Scene {
 
       
+    
 
     collectItem(player, item, collider) {
         // Obtener las coordenadas del jugador y del ítem
@@ -40,8 +47,14 @@ export default class MainScene extends Scene {
             // Por ejemplo, aumentar la cantidad de ítems recolectados, etc.
         }
     }
+
+    handleDialogClose() {
+        this.dialogOpen = false;
+    }
     
-    
+    getPlayerCoordinates() {
+        return { x: player.x, y: player.y };
+    }
     
 
     tryMovePlayer(deltaX, deltaY) {
@@ -53,14 +66,21 @@ export default class MainScene extends Scene {
         const tile = this.map.getTileAt(tileX, tileY, true, 'Colliders');
         
         // Verificar si el jugador y el objeto "potions" están en la misma posición
-        if (potions.collected == false){
-            overlapWithItem = (Math.floor(potions.x / this.map.tileWidth) === tileX && Math.floor(potions.y / this.map.tileHeight) === tileY);
-           
-        } else {
-            overlapWithItem = false
-            
+        const objects = [fruits, potions,potion2, potion3, potion4];
+
+        let overlapWithAnyObject = false;
+    
+        // Verifica la superposición con cada objeto en el array
+        for (const obj of objects) {
+            if (!obj.collected) {
+                const overlap = (Math.floor(obj.x / this.map.tileWidth) === tileX && Math.floor(obj.y / this.map.tileHeight) === tileY);
+                if (overlap) {
+                    overlapWithAnyObject = true;
+                    break; // Si hay superposición con algún objeto, se detiene el bucle
+                }
+            }
         }
-        if ((!tile || !tile.collides) && !overlapWithItem) {
+        if ((!tile || !tile.collides) && !overlapWithAnyObject) {
             this.movePlayer(deltaX, deltaY);
         }
     }
@@ -73,15 +93,22 @@ export default class MainScene extends Scene {
         const tileX = Math.floor(nextX / this.map.tileWidth);
         const tileY = Math.floor(nextY / this.map.tileHeight);
         const tile = this.map.getTileAt(tileX, tileY, true, 'Colliders');
-        if (potions.collected == false){
-            overlapWithItem = (Math.floor(potions.x / this.map.tileWidth) === tileX && Math.floor(potions.y / this.map.tileHeight) === tileY);
-           
-        } else {
-            overlapWithItem = false
-            
+        const objects = [fruits, potions,potion2, potion3, potion4];
+
+        let overlapWithAnyObject = false;
+    
+        // Verifica la superposición con cada objeto en el array
+        for (const obj of objects) {
+            if (!obj.collected) {
+                const overlap = (Math.floor(obj.x / this.map.tileWidth) === tileX && Math.floor(obj.y / this.map.tileHeight) === tileY);
+                if (overlap) {
+                    overlapWithAnyObject = true;
+                    break; // Si hay superposición con algún objeto, se detiene el bucle
+                }
+            }
         }
     
-        if ((!tile || !tile.collides) && !overlapWithItem) {
+        if ((!tile || !tile.collides) && !overlapWithAnyObject) {
             this.movePlayerRun(deltaX, deltaY);
         }
     }
@@ -94,6 +121,7 @@ export default class MainScene extends Scene {
             y: player.y + deltaY,
             duration: 300, 
             onComplete: () => {
+                console.log(player.x, player.y)
                 this.canMove = true;
                 if (pie == "izquierdo"){
                     pie = "derecho"
@@ -128,11 +156,20 @@ export default class MainScene extends Scene {
         this.moveDistance = 16;
         this.canMove = true;
         this.collectibleObjects = [];
+        this.dialogOpen = false;
+    }
+    
+    init(data) {
+        // Accede a positionData desde los datos iniciales de la escena
+        const positionData = data.positionData;
+        console.log(positionData);
+        this.positionData = positionData;
     }
 
     preload() {
+        this.cameras.main.setBackgroundColor('#000000');
         // Carga del tileset y del archivo JSON del mapa
-        this.load.image('tileset', 'assets/tilemap32x32.png');
+        this.load.image('tileset', 'assets/fullextruded2.png');
         this.load.tilemapTiledJSON('map', 'assets/Far_Away_Town.tmj');
 
         this.load.spritesheet('prota',
@@ -143,43 +180,60 @@ export default class MainScene extends Scene {
         'assets/potions.png',
         { frameWidth: 16, frameHeight: 16, }
         );
+        this.load.spritesheet('fruits',
+        'assets/fruits.png',
+        { frameWidth: 16, frameHeight: 16, }
+        );
     }
 
     create() {
+        this.saveConfirmationDialog = new SaveConfirmationDialog(this);      
+
         // Creación del mapa basado en el archivo JSON cargado
         const map = this.make.tilemap({ key: 'map' });
         this.map = map;
-        const tileset = map.addTilesetImage('tilemap32x32', 'tileset');
+        const tileset = map.addTilesetImage('tilemap32x32', 'tileset', 16, 16, 1, 2);
 
         // Capas del mapa
-        const GroundLayer = map.createLayer('Ground', tileset, 0, 0).setDepth(0);
+        const GroundLayer = map.createLayer('Ground', tileset, -256, -256).setDepth(0);
         const DecorsLayer = map.createLayer('Decors', tileset, 256, 0).setDepth(8);
         const HousesLayer = map.createLayer('Houses', tileset, 0, 0).setDepth(7);
-        const Tree1Layer = map.createLayer('Tree1', tileset, -256, 0).setDepth(6);
-        const Tree2Layer = map.createLayer('Tree2', tileset, -256, 0).setDepth(5);
-        const Tree3Layer = map.createLayer('Tree3', tileset, 0, 0).setDepth(4);
+        const Tree1Layer = map.createLayer('Tree1', tileset, -256, -256).setDepth(6);
+        const Tree2Layer = map.createLayer('Tree2', tileset, -256, -256).setDepth(5);
+        const Tree3Layer = map.createLayer('Tree3', tileset, -256, -256).setDepth(4);
         const LonggrassLayer = map.createLayer('Longgrass', tileset, 0, 0).setDepth(3);
-        const Houses2Layer = map.createLayer('Houses2', tileset, 256, 0).setDepth(2);
+        const Houses2Layer = map.createLayer('Houses2', tileset, 256, ).setDepth(2);
         const AguaLayer = map.createLayer('Agua', tileset, 0, 0).setDepth(1);
         const ColliderLayer = map.createLayer('Colliders', tileset, 0, 0).setDepth(-1);
         const OverlapLayer = map.createLayer('Overlap', tileset, 0, 0).setDepth(10);
+        const Overlap2Layer = map.createLayer('Overlap2', tileset, 256, 256).setDepth(10);
 
+       
+        player = this.physics.add.sprite(player.x,player.y,'prota')
+        const { x, y, scene } = this.positionData;
+        player.x = x
+        player.y = y
+        potions = this.physics.add.sprite(264,472,'potions');
+        potion2 = this.physics.add.sprite(504,312,'potions');
+        potion3 = this.physics.add.sprite(584,456,'potions');
+        potion4 = this.physics.add.sprite(200,152,'potions');
 
-
-        player = this.physics.add.sprite(8,64,'prota')
-        potions = this.physics.add.sprite(40,72,'potions')
-        potions.collected = false
-        potions.id = 1
+        fruits = this.physics.add.sprite(408,120,'fruits');
+        const Items = [potions,fruits,potion2, potion3, potion4];
+        for (const Item of Items) {
+            Item.collected = false
+            Item.setDepth(8);
+            count = count+1
+            Item.id = count
+        }
         player.setDepth(9);
-        potions.setDepth(9);
-        this.collectibleObjects.push(this.potions);
         this.cameras.main.setZoom(3);
         this.cameras.main.startFollow(player);
         this.cameras.main.roundPixels = true;
         map.setCollisionBetween(1, 1000, true, 'Colliders');
         ColliderLayer.setCollisionByExclusion([-1]);
         this.physics.add.collider(player, ColliderLayer);
-        this.physics.add.collider(player, potions, this.collectItem, null, this);
+
 
 
         this.anims.create({
@@ -308,6 +362,28 @@ export default class MainScene extends Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: 'potion2',
+            frames: [{ key: 'potions', frame: 1 }], // Cambia 'sprite_sheet' por el nombre de tu hoja de sprites y 0 por el número de frame que deseas reproducir
+            frameRate: 1, // Establece el frameRate en 1 para que el frame se reproduzca solo una vez
+        });
+        this.anims.create({
+            key: 'potion3',
+            frames: [{ key: 'potions', frame: 2 }], // Cambia 'sprite_sheet' por el nombre de tu hoja de sprites y 0 por el número de frame que deseas reproducir
+            frameRate: 1, // Establece el frameRate en 1 para que el frame se reproduzca solo una vez
+        });
+        this.anims.create({
+            key: 'potion4',
+            frames: [{ key: 'potions', frame: 3 }], // Cambia 'sprite_sheet' por el nombre de tu hoja de sprites y 0 por el número de frame que deseas reproducir
+            frameRate: 1, // Establece el frameRate en 1 para que el frame se reproduzca solo una vez
+        });
+
+        potion2.anims.play("potion2")
+        potion3.anims.play("potion3")
+        potion4.anims.play("potion4")
+
+        
+
 
 
         
@@ -321,7 +397,19 @@ export default class MainScene extends Scene {
     update() {
         var cursors = this.input.keyboard.createCursorKeys();
         var shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-        this.collectItem(player, potions);
+        const Items = [potions,fruits,potion2, potion3, potion4];
+        for (const Item of Items) {
+            this.collectItem(player, Item);
+        }
+        const sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        if (sKey.isDown && !this.dialogOpen && this.canMove) {
+            // Acciones a realizar cuando la tecla S es presionada
+            console.log('Tecla S presionada');
+            // Agrega aquí la lógica que deseas ejecutar cuando la tecla S sea presionada
+            this.dialogOpen = true
+
+            this.saveConfirmationDialog.show();
+        }
         if (this.canMove) {
             if (cursors.left.isDown && pie == "izquierdo" && !shiftKey.isDown) {
                 player.anims.play('left_izquierdo', true);
