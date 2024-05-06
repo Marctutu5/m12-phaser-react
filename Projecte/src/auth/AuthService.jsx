@@ -301,6 +301,145 @@ const getTransactions = async () => {
   return data;
 };
 
+const getUserFissurial = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/user-fissurial`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch user fissurial data');
+  }
+  return data;
+};
+
+const getUserFissurials = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/user-fissurials`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch user fissurial data');
+  }
+  return data;
+};
+
+
+const getFissurials = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/fissurials`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  console.log('Fissurials data:', data); // Imprime la respuesta
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch fissurials data');
+  }
+  return data;
+};
+
+
+const getFissurialById = async (id) => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/fissurials/${id}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch fissurial data');
+  }
+  return data;
+};
+
+const getAttacks = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/attacks`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch attacks data');
+  }
+  return data;
+};
+
+const getAttackById = async (id) => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/attacks/${id}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch attack data');
+  }
+  return data;
+};
+
+const getFissurialAttacksByFissurial = async (fissurialId) => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/fissurial-attacks/fissurial/${fissurialId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch fissurial attacks data');
+  }
+  return data;
+};
+
+const getFissurialAttacksByAttack = async (attackId) => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/fissurial-attacks/attack/${attackId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch attack data');
+  }
+  return data;
+};
+
 
 export default {
   login,
@@ -316,7 +455,16 @@ export default {
   cancelListing,
   createTransaction,
   getTransactions,
-  getPosition, 
-  updatePosition
+  getPosition,
+  updatePosition,
+  getUserFissurial,
+  getFissurials,
+  getFissurialById,
+  getAttacks,
+  getAttackById,
+  getFissurialAttacksByFissurial,
+  getFissurialAttacksByAttack,
+  getUserFissurials
 };
+
 

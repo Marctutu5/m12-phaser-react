@@ -24,7 +24,7 @@ function Header({ userName, onLogout }) {
               <Link to="/recharge" className="nav-link text-dark">Recharge</Link>
             </Nav.Item>
             <Nav.Item>
-              <Link to="/profile" className="nav-link text-dark">Profile</Link>
+              <Link to="/fissurials" className="nav-link text-dark">Fissurials</Link>
             </Nav.Item>
           </Nav>
           <Nav className="ml-auto"> {/* Estos irán a la derecha */}
