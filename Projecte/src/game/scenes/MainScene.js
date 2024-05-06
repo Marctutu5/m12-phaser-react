@@ -224,6 +224,7 @@ export default class MainScene extends Scene {
     }
 
     create() {
+        this.scene.start('BattleScene')
         this.saveConfirmationDialog = new SaveConfirmationDialog(this);      
         this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
 

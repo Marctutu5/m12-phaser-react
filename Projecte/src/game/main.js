@@ -1,5 +1,6 @@
 import MainScene from './scenes/MainScene';
 import LoadingScene from './scenes/LoadingScene';
+import BattleScene from './scenes/BattleScene';
 import Phaser from 'phaser';
 
 // Find out more information about the Game Config at:
@@ -12,7 +13,8 @@ const config = {
     backgroundColor: '#028af8',
     scene: [
         LoadingScene,
-        MainScene
+        MainScene,
+        BattleScene
     ],
     physics:{
         default: 'arcade',
