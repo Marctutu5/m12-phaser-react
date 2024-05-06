@@ -190,6 +190,35 @@ const getCollectedItems = async () => {
     }
 };
 
+const storeCollectedItem = async (itemId) => {
+  const token = getToken();
+  try {
+      const response = await fetch(`${API_URL}/usercollecteditems`, {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              map_item_id: itemId
+          })
+      });
+
+      if (!response.ok) {
+          console.error('Failed to store collected item');
+          return null;
+      }
+
+      // Intentar analizar la respuesta JSON
+      const storedItem = await response.json();
+      return storedItem;
+  } catch (error) {
+      console.error('Error storing collected item:', error);
+      return null;
+  }
+};
+
+
 const getMapItemCords = async () => {
   const token = getToken();
   try {
@@ -371,6 +400,7 @@ export default {
   getPosition, 
   updatePosition,
   getCollectedItems,
-  getMapItemCords
+  getMapItemCords,
+  storeCollectedItem
 };
 

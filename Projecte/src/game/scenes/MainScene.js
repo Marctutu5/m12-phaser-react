@@ -35,6 +35,8 @@ export default class MainScene extends Scene {
             item.destroy();
             item.collected = true
             AuthService.updateBackpack(item.id, 1);
+            AuthService.storeCollectedItem(item.id);
+            AuthService.updatePosition(player.x, player.y, 1);
             // Eliminar la colisión entre el jugador y el ítem
             this.physics.world.removeCollider(collider);
             // Realizar cualquier otra acción que desees al recoger el ítem
@@ -105,20 +107,38 @@ export default class MainScene extends Scene {
             this.movePlayerRun(deltaX, deltaY);
         }
     }
+
+    createItems() {
+        // Iterar sobre los elementos de MapItemCords
+        this.MapItemCords.forEach(cord => {
+            // Verificar si el ID del elemento está presente en collectedItems
+            const isCollected = this.collectedItems.some(item => item.map_item_id == cord.id);
     
-    createItem(id, x, y, itemName, itemSprite) {
+            // Si el elemento no está en collectedItems, crear el objeto en la escena
+            if (isCollected == false) {
+                const newItem = this.createItem(cord.id, cord.x, cord.y, `item_${cord.id}`, cord.route);
+                newItem.collected = false;
+                newItem.setDepth(8);
+    
+                // Reproducir la animación correspondiente si es necesario
+                if (cord.id === 3) {
+                    newItem.anims.play("potion2");
+                } else if (cord.id === 4) {
+                    newItem.anims.play("potion3");
+                } else if (cord.id === 5) {
+                    newItem.anims.play("potion4");
+                }
+            }
+        });
+    }
+    
+    
+    createItem(id, x, y, itemName, route) {
         // Crea el objeto en la escena en las coordenadas especificadas
         // y con el nombre único proporcionado
         let newItem
-        if (id == 1 || id == 3 || id == 4 || id == 5){
-        newItem = this.physics.add.sprite(x, y, 'potions').setName(itemName);
-        console.log(x,y)
-        console.log("añadido sprite", newItem)
-        }else if (id == 2){
-        newItem = this.physics.add.sprite(x, y, 'fruits').setName(itemName);
-        } else{
-            console.log("noentra")
-        }
+        newItem = this.physics.add.sprite(x, y, route).setName(itemName);
+        newItem.id = id
         this.items.push(newItem)
 
         // Configura cualquier otra propiedad del objeto según necesites
@@ -182,6 +202,8 @@ export default class MainScene extends Scene {
     }
 
     preload() {
+
+        this.load.audio('backgroundMusic', 'assets/far_away_town.mp3');
         this.cameras.main.setBackgroundColor('#000000');
         // Carga del tileset y del archivo JSON del mapa
         this.load.image('tileset', 'assets/fullextruded2.png');
@@ -203,6 +225,10 @@ export default class MainScene extends Scene {
 
     create() {
         this.saveConfirmationDialog = new SaveConfirmationDialog(this);      
+        this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
+
+        // Iniciar la reproducción de la música de fondo
+        this.backgroundMusic.play();
 
         // Creación del mapa basado en el archivo JSON cargado
         const map = this.make.tilemap({ key: 'map' });
@@ -402,40 +428,7 @@ export default class MainScene extends Scene {
         });
 
 
-        const itemsToCreate = this.collectedItems.filter(item => item.collected === 0);
-
-        // Genera los objetos en la escena utilizando los datos de los items filtrados
-        itemsToCreate.forEach(item => {
-            // Crea el objeto en la escena utilizando las coordenadas del item
-            // y un nombre único basado en su ID
-            let mapx = 0
-            let mapy = 0
-            this.MapItemCords.forEach(cords => {
-                if (cords.id == item.map_item_id){
-                    mapx = cords.x
-                    mapy = cords.y
-                }
-
-            });
-            const newItem = this.createItem(item.map_item_id,mapx, mapy, `item_${item.map_item_id}`);
-            // Configura la propiedad collected del objeto como false
-            newItem.collected = false;
-            // Establece la profundidad del objeto
-            newItem.setDepth(8);
-            newItem.id = item.map_item_id
-            if (newItem.id == 3){
-                newItem.anims.play("potion2")
-            }
-            if (newItem.id == 4){
-                newItem.anims.play("potion3")
-            }
-            if (newItem.id == 5){
-                newItem.anims.play("potion4")
-            }
-        });
-
-        
-
+        this.createItems()
 
     }
 
