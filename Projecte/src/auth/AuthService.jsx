@@ -190,6 +190,32 @@ const getCollectedItems = async () => {
     }
 };
 
+const getMapItemCords = async () => {
+  const token = getToken();
+  try {
+      const response = await fetch(`${API_URL}/mapitems`, {
+          method: 'GET',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          },
+      });
+
+      if (!response.ok) {
+          console.error('Failed to fetch collected mapitems');
+          return null;
+      }
+
+      // Intentar analizar la respuesta JSON
+      const MapItemCords = await response.json();
+      return MapItemCords;
+  } catch (error) {
+      console.error('Error fetching collected items:', error);
+      return null;
+  }
+};
+
+
 
 const updatePosition = async (x, y, scene) => {
   const url = `${API_URL}/user-position`;
@@ -344,6 +370,7 @@ export default {
   getTransactions,
   getPosition, 
   updatePosition,
-  getCollectedItems
+  getCollectedItems,
+  getMapItemCords
 };
 

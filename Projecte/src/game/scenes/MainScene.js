@@ -2,19 +2,13 @@ import { Scene } from 'phaser';
 import SaveConfirmationDialog from '../components/SaveConfirmationDialog';
 import AuthService from '../../auth/AuthService';
 let player = ""
-let potions = ""
-let potion2 = ""
-let potion3 = ""
-let potion4 = ""
-let fruits = ""
 let count = 0
 let pie ="izquierdo"
 
 
 export default class MainScene extends Scene {
 
-      
-    
+    items = [];
 
     collectItem(player, item, collider) {
         // Obtener las coordenadas del jugador y del ítem
@@ -66,12 +60,12 @@ export default class MainScene extends Scene {
         const tile = this.map.getTileAt(tileX, tileY, true, 'Colliders');
         
         // Verificar si el jugador y el objeto "potions" están en la misma posición
-        const objects = [fruits, potions,potion2, potion3, potion4];
+
 
         let overlapWithAnyObject = false;
     
         // Verifica la superposición con cada objeto en el array
-        for (const obj of objects) {
+        for (const obj of this.items) {
             if (!obj.collected) {
                 const overlap = (Math.floor(obj.x / this.map.tileWidth) === tileX && Math.floor(obj.y / this.map.tileHeight) === tileY);
                 if (overlap) {
@@ -93,12 +87,11 @@ export default class MainScene extends Scene {
         const tileX = Math.floor(nextX / this.map.tileWidth);
         const tileY = Math.floor(nextY / this.map.tileHeight);
         const tile = this.map.getTileAt(tileX, tileY, true, 'Colliders');
-        const objects = [fruits, potions,potion2, potion3, potion4];
 
         let overlapWithAnyObject = false;
     
         // Verifica la superposición con cada objeto en el array
-        for (const obj of objects) {
+        for (const obj of this.items) {
             if (!obj.collected) {
                 const overlap = (Math.floor(obj.x / this.map.tileWidth) === tileX && Math.floor(obj.y / this.map.tileHeight) === tileY);
                 if (overlap) {
@@ -111,6 +104,26 @@ export default class MainScene extends Scene {
         if ((!tile || !tile.collides) && !overlapWithAnyObject) {
             this.movePlayerRun(deltaX, deltaY);
         }
+    }
+    
+    createItem(id, x, y, itemName, itemSprite) {
+        // Crea el objeto en la escena en las coordenadas especificadas
+        // y con el nombre único proporcionado
+        let newItem
+        if (id == 1 || id == 3 || id == 4 || id == 5){
+        newItem = this.physics.add.sprite(x, y, 'potions').setName(itemName);
+        console.log(x,y)
+        console.log("añadido sprite", newItem)
+        }else if (id == 2){
+        newItem = this.physics.add.sprite(x, y, 'fruits').setName(itemName);
+        } else{
+            console.log("noentra")
+        }
+        this.items.push(newItem)
+
+        // Configura cualquier otra propiedad del objeto según necesites
+        // Por ejemplo:
+        return newItem;
     }
 
     movePlayer(deltaX, deltaY) {
@@ -164,6 +177,8 @@ export default class MainScene extends Scene {
         const positionData = data.positionData;
         console.log(positionData);
         this.positionData = positionData;
+        this.collectedItems = data.collectedItems;
+        this.MapItemCords = data.MapItemCords;
     }
 
     preload() {
@@ -213,22 +228,26 @@ export default class MainScene extends Scene {
         const { x, y, scene } = this.positionData;
         player.x = x
         player.y = y
-        potions = this.physics.add.sprite(264,472,'potions');
-        potion2 = this.physics.add.sprite(504,312,'potions');
-        potion3 = this.physics.add.sprite(584,456,'potions');
-        potion4 = this.physics.add.sprite(200,152,'potions');
 
-        fruits = this.physics.add.sprite(408,120,'fruits');
-        const Items = [potions,fruits,potion2, potion3, potion4];
-        for (const Item of Items) {
-            Item.collected = false
-            Item.setDepth(8);
-        }
-        potions.id = 1
-        fruits.id = 2
-        potion2.id = 3
-        potion3.id = 4
-        potion4.id = 5
+
+
+        // potions = this.physics.add.sprite(264,472,'potions');
+        // potion2 = this.physics.add.sprite(504,312,'potions');
+        // potion3 = this.physics.add.sprite(584,456,'potions');
+        // potion4 = this.physics.add.sprite(200,152,'potions');
+        // fruits = this.physics.add.sprite(408,120,'fruits');
+
+        // const Items = [potions,fruits,potion2, potion3, potion4];
+
+        // for (const Item of Items) {
+        //     Item.collected = false
+        //     Item.setDepth(8);
+        // }
+        // potions.id = 1
+        // fruits.id = 2
+        // potion2.id = 3
+        // potion3.id = 4
+        // potion4.id = 5
         
         player.setDepth(9);
         this.cameras.main.setZoom(3);
@@ -382,18 +401,40 @@ export default class MainScene extends Scene {
             frameRate: 1, // Establece el frameRate en 1 para que el frame se reproduzca solo una vez
         });
 
-        potion2.anims.play("potion2")
-        potion3.anims.play("potion3")
-        potion4.anims.play("potion4")
+
+        const itemsToCreate = this.collectedItems.filter(item => item.collected === 0);
+
+        // Genera los objetos en la escena utilizando los datos de los items filtrados
+        itemsToCreate.forEach(item => {
+            // Crea el objeto en la escena utilizando las coordenadas del item
+            // y un nombre único basado en su ID
+            let mapx = 0
+            let mapy = 0
+            this.MapItemCords.forEach(cords => {
+                if (cords.id == item.map_item_id){
+                    mapx = cords.x
+                    mapy = cords.y
+                }
+
+            });
+            const newItem = this.createItem(item.map_item_id,mapx, mapy, `item_${item.map_item_id}`);
+            // Configura la propiedad collected del objeto como false
+            newItem.collected = false;
+            // Establece la profundidad del objeto
+            newItem.setDepth(8);
+            newItem.id = item.map_item_id
+            if (newItem.id == 3){
+                newItem.anims.play("potion2")
+            }
+            if (newItem.id == 4){
+                newItem.anims.play("potion3")
+            }
+            if (newItem.id == 5){
+                newItem.anims.play("potion4")
+            }
+        });
 
         
-
-
-
-        
-
-
-
 
 
     }
@@ -401,8 +442,7 @@ export default class MainScene extends Scene {
     update() {
         var cursors = this.input.keyboard.createCursorKeys();
         var shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-        const Items = [potions,fruits,potion2, potion3, potion4];
-        for (const Item of Items) {
+        for (const Item of this.items) {
             this.collectItem(player, Item);
         }
         const sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
