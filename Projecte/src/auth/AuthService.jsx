@@ -563,6 +563,23 @@ const recordRecharge = async (transactionDetails) => {
   return data;
 };
 
+const getRecharges = async () => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/recharges`, {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+      },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+      throw new Error(data.message || 'Failed to fetch recharges');
+  }
+
+  return data;
+};
 
 export default {
   login,
@@ -592,7 +609,8 @@ export default {
   getFissurialAttacksByAttack,
   getUserFissurials,
   updateWallet,
-  recordRecharge
+  recordRecharge,
+  getRecharges
 };
 
 
