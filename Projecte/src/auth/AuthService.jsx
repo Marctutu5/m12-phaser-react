@@ -521,6 +521,48 @@ const getFissurialAttacksByAttack = async (attackId) => {
   return data;
 };
 
+const updateWallet = async (coins) => {
+  const token = getToken();
+  const response = await fetch(`${API_URL}/wallet/update`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ coins })
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || 'Failed to update wallet');
+  }
+
+  return await response.json();
+};
+
+const recordRecharge = async (transactionDetails) => {
+  const token = getToken();
+  console.log('Sending recharge details:', transactionDetails); // Debugging output
+  const response = await fetch(`${API_URL}/recharges`, {
+      method: 'POST',
+      headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(transactionDetails)
+  });
+
+  if (!response.ok) {
+      const data = await response.json();
+      console.error('Failed to record recharge:', data); // Debugging output
+      throw new Error(data.message || 'Failed to record recharge');
+  }
+
+  const data = await response.json();
+  console.log('Recharge recorded successfully:', data); // Debugging output
+  return data;
+};
+
 
 export default {
   login,
@@ -548,7 +590,9 @@ export default {
   getAttackById,
   getFissurialAttacksByFissurial,
   getFissurialAttacksByAttack,
-  getUserFissurials
+  getUserFissurials,
+  updateWallet,
+  recordRecharge
 };
 
 

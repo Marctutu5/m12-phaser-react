@@ -13,6 +13,7 @@ import MarketSell from './pages/market/MarketSell';
 import MarketManage from './pages/market/MarketManage';
 import MarketTransaction from './pages/market/MarketTransaction';
 import Fissurials from './pages/fissurials/Fissurials';
+import Recharge from './pages/recharge/Recharge';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import { PhaserGame } from './game/PhaserGame';
@@ -68,6 +69,7 @@ function App() {
           <Route path="transaction" element={<MarketTransaction />} />
         </Route>
         <Route path="/fissurials" element={<ProtectedRoute isAuthenticated={!!authToken}><Fissurials userName={userName} /></ProtectedRoute>} />
+        <Route path="/recharge" element={<ProtectedRoute isAuthenticated={!!authToken}><Recharge userName={userName} /></ProtectedRoute>} />
       </Routes>
       <Footer />
     </Router>
