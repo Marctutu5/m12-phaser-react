@@ -165,6 +165,87 @@ const getPosition = async () => {
   }
 };
 
+const getCollectedItems = async () => {
+    const token = getToken();
+    try {
+        const response = await fetch(`${API_URL}/usercollecteditems`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            console.error('Failed to fetch collected items');
+            return null;
+        }
+
+        // Intentar analizar la respuesta JSON
+        const collectedItems = await response.json();
+        return collectedItems;
+    } catch (error) {
+        console.error('Error fetching collected items:', error);
+        return null;
+    }
+};
+
+const storeCollectedItem = async (itemId) => {
+  const token = getToken();
+  try {
+      const response = await fetch(`${API_URL}/usercollecteditems`, {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              map_item_id: itemId
+          })
+      });
+
+      if (!response.ok) {
+          console.error('Failed to store collected item');
+          return null;
+      }
+
+      // Intentar analizar la respuesta JSON
+      const storedItem = await response.json();
+      return storedItem;
+  } catch (error) {
+      console.error('Error storing collected item:', error);
+      return null;
+  }
+};
+
+
+const getMapItemCords = async () => {
+  const token = getToken();
+  try {
+      const response = await fetch(`${API_URL}/mapitems`, {
+          method: 'GET',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          },
+      });
+
+      if (!response.ok) {
+          console.error('Failed to fetch collected mapitems');
+          return null;
+      }
+
+      // Intentar analizar la respuesta JSON
+      const MapItemCords = await response.json();
+      return MapItemCords;
+  } catch (error) {
+      console.error('Error fetching collected items:', error);
+      return null;
+  }
+};
+
+
+
 const updatePosition = async (x, y, scene) => {
   const url = `${API_URL}/user-position`;
   const token = getToken();
@@ -457,6 +538,9 @@ export default {
   getTransactions,
   getPosition,
   updatePosition,
+  getCollectedItems,
+  getMapItemCords,
+  storeCollectedItem,
   getUserFissurial,
   getFissurials,
   getFissurialById,
