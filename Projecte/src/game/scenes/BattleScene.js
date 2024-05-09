@@ -1,56 +1,122 @@
 import { Scene } from 'phaser';
 
+let fissurial_quant;
+let enemy_fissurial;
+let fissurial_random;
+
 export default class BattleScene extends Scene {
+    getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    init(data) {
+        this.UserFissurial = data.UserFissurial;
+        this.Fissurials = data.Fissurials;
+        this.attackCooldown = false;
+        this.previousScene = data.previousScene;
+    }
+
     constructor() {
         super('BattleScene');
+        this.previousScene = null;
     }
 
     create() {
-        // Inicializar variables de vida
-        this.playerHealth = 100;
-        this.enemyHealth = 100;
+        this.background = this.add.image(0, 0, 'assets/bosque.jpg').setOrigin(0);
 
-        // Mostrar información de la vida
-        this.playerHealthText = this.add.text(50, 200, 'Jugador: ' + this.playerHealth, { fontSize: '18px', fill: '#fff' });
-        this.enemyHealthText = this.add.text(50, 280, 'Enemigo: ' + this.enemyHealth, { fontSize: '18px', fill: '#fff' });
+        // Ajustar la imagen de fondo para que cubra toda la pantalla
+        this.background.displayWidth = this.game.config.width;
+        this.background.displayHeight = this.game.config.height;
+        this.background.setDepth(-1);
+        console.log("fiss", this.Fissurials);
+        fissurial_quant = this.Fissurials.length;
+        console.log('quant', fissurial_quant);
+        fissurial_random = this.getRandomInt(fissurial_quant);
+        console.log("rand", fissurial_random);
+        enemy_fissurial = this.Fissurials[fissurial_random];
+        console.log("enemy", enemy_fissurial);
+        this.enemyHealth = enemy_fissurial.original_life;
+        this.playerHealth = this.UserFissurial.current_life;
 
-        // Configurar la escena de juego
-        this.add.text(50, 100, '¡Encuentras un enemigo!', { fontSize: '24px', fill: '#fff' });
+        this.playerHealthText = this.add.text(50, 200, this.UserFissurial.fissurial.name + ' ' +  this.playerHealth, { fontSize: '18px', fill: '#fff' });
+        this.enemyHealthText = this.add.text(50, 280, enemy_fissurial.name + ' ' + this.enemyHealth, { fontSize: '18px', fill: '#fff' });
 
-        // Crear botones para los ataques
+        this.add.text(50, 100, '¡Ha aparecido un ' + enemy_fissurial.name + ' salvaje!', { fontSize: '24px', fill: '#fff' });
+
         this.attackButtons = [];
-        for (let i = 1; i <= 4; i++) {
-            const button = this.add.text(150 * i, 400, 'Ataque ' + i, { fontSize: '18px', fill: '#fff' }).setInteractive();
-            button.on('pointerdown', () => this.performAttack(i));
+        let i = 1;
+        this.UserFissurial.fissurial.attacks.forEach((attack) => {
+            i++;
+            const button = this.add.text(150 * i, 400, attack.name, { fontSize: '18px', fill: '#fff' }).setInteractive();
+            button.on('pointerdown', () => {
+                if (!this.attackCooldown) {
+                    this.performAttack(attack);
+                    this.attackCooldown = true;
+                    this.disablePlayerAttacks();
+                    this.time.delayedCall(6000, () => {
+                        this.attackCooldown = false;
+                        this.enablePlayerAttacks();
+                    });
+                }
+            });
             this.attackButtons.push(button);
+        });
+    }
+
+    performAttack(attack) {
+        console.log('Player attacked with ' + attack.name + '!');
+
+        const playerDamage = attack.power;
+        this.enemyHealth -= playerDamage;
+        this.enemyHealthText.setText(enemy_fissurial.name + ' ' + this.enemyHealth);
+
+        this.showMessage('¡Has atacado al enemigo con ' + attack.name + '!');
+
+        if (this.enemyHealth <= 0) {
+            console.log('¡Enemigo derrotado!');
+            this.scene.stop('BattleScene')
+            this.scene.resume('MainScene');
+            return;
+        }
+
+        this.time.delayedCall(3000, this.performEnemyAttack, [], this);
+    }
+
+    performEnemyAttack() {
+        const randomAttackIndex = this.getRandomInt(enemy_fissurial.attacks.length);
+        const enemyAttack = enemy_fissurial.attacks[randomAttackIndex];
+        console.log('Enemy attacked with ' + enemyAttack.name + '!');
+
+        const enemyDamage = enemyAttack.power;
+        this.playerHealth -= enemyDamage;
+        this.playerHealthText.setText(this.UserFissurial.fissurial.name + ' ' +  this.playerHealth);
+
+        this.showMessage('¡El enemigo te atacó con ' + enemyAttack.name + '!');
+
+        if (this.playerHealth <= 0) {
+            console.log('¡Jugador derrotado!');
+            this.scene.stop('BattleScene')
+            this.scene.resume('MainScene');
+            return;
         }
     }
 
-    performAttack(attackIndex) {
-        // Simular ataque del jugador
-        const playerDamage = Phaser.Math.Between(10, 20);
-        this.enemyHealth -= playerDamage;
-        this.enemyHealthText.setText('Enemigo: ' + this.enemyHealth);
+    disablePlayerAttacks() {
+        this.attackButtons.forEach(button => {
+            button.disableInteractive();
+        });
+    }
 
-        // Verificar si el enemigo ha sido derrotado
-        if (this.enemyHealth <= 0) {
-            console.log('¡Enemigo derrotado!');
-            this.scene.stop('BattleScene');
-            this.scene.resume('GameScene');
-            return;
-        }
+    enablePlayerAttacks() {
+        this.attackButtons.forEach(button => {
+            button.setInteractive();
+        });
+    }
 
-        // Simular ataque del enemigo
-        const enemyDamage = Phaser.Math.Between(10, 20);
-        this.playerHealth -= enemyDamage;
-        this.playerHealthText.setText('Jugador: ' + this.playerHealth);
-
-        // Verificar si el jugador ha sido derrotado
-        if (this.playerHealth <= 0) {
-            console.log('¡Jugador derrotado!');
-            this.scene.stop('BattleScene');
-            this.scene.resume('GameScene');
-            return;
-        }
+    showMessage(message) {
+        const messageText = this.add.text(50, 500, message, { fontSize: '18px', fill: '#fff' });
+        this.time.delayedCall(2000, () => {
+            messageText.destroy();
+        });
     }
 }

@@ -4,11 +4,18 @@ import AuthService from '../../auth/AuthService';
 let player = ""
 let count = 0
 let pie ="izquierdo"
+let UserFissurial
+let Fissurials
+let move = true
 
 
 export default class MainScene extends Scene {
 
     items = [];
+
+    getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
 
     collectItem(player, item, collider) {
         // Obtener las coordenadas del jugador y del ítem
@@ -147,41 +154,86 @@ export default class MainScene extends Scene {
     }
 
     movePlayer(deltaX, deltaY) {
-        this.canMove = false; 
-        this.tweens.add({
-            targets: player,
-            x: player.x + deltaX,
-            y: player.y + deltaY,
-            duration: 300, 
-            onComplete: () => {
-                console.log(player.x, player.y)
-                this.canMove = true;
-                if (pie == "izquierdo"){
-                    pie = "derecho"
-                }else if (pie == "derecho"){
-                    pie = "izquierdo"
-                }
+        if (move == true) {
+            this.canMove = false; 
+            this.tweens.add({
+                targets: player,
+                x: player.x + deltaX,
+                y: player.y + deltaY,
+                duration: 300, 
+                onComplete: () => {
+                    
+                    const playerTileX = Math.floor(player.x / this.map.tileWidth);
+                    const playerTileY = Math.floor(player.y / this.map.tileHeight);
+                    const grass = this.map.getTileAt(playerTileX, playerTileY, true, 'Longgrass');
                 
-            }
-        });
+                    // Si el jugador está sobre la Longgrass y no hay un diálogo abierto
+                    if (grass && grass.index !== -1 && !this.dialogOpen) {
+            
+                        const pelea = this.getRandomInt(4)
+                        console.log(pelea)
+                        // Iniciar la escena de batalla
+                        if (pelea==3){
+                            move = false
+                            this.scene.pause('MainScene')
+            
+                            this.scene.launch('BattleScene', { UserFissurial, Fissurials, previousScene: this.scene });
+            
+                        }
+                    }
+
+                    console.log(player.x, player.y)
+                    this.canMove = true;
+                    if (pie == "izquierdo"){
+                        pie = "derecho"
+                    }else if (pie == "derecho"){
+                        pie = "izquierdo"
+                    }
+                    
+                }
+            });
+        }
+        move = true
     }
     movePlayerRun(deltaX, deltaY) {
-        this.canMove = false;
-        this.tweens.add({
-            targets: player,
-            x: player.x + deltaX,
-            y: player.y + deltaY,
-            duration: 180,
-            onComplete: () => {
-                this.canMove = true;
-                if (pie == "izquierdo"){
-                    pie = "derecho"
-                }else if (pie == "derecho"){
-                    pie = "izquierdo"
-                }
+        if (move == true) {
+            this.canMove = false;
+            this.tweens.add({
+                targets: player,
+                x: player.x + deltaX,
+                y: player.y + deltaY,
+                duration: 180,
+                onComplete: () => {
+                    const playerTileX = Math.floor(player.x / this.map.tileWidth);
+                    const playerTileY = Math.floor(player.y / this.map.tileHeight);
+                    const grass = this.map.getTileAt(playerTileX, playerTileY, true, 'Longgrass');
                 
-            }
-        });
+                    // Si el jugador está sobre la Longgrass y no hay un diálogo abierto
+                    if (grass && grass.index !== -1 && !this.dialogOpen) {
+            
+                        const pelea = this.getRandomInt(4)
+                        console.log(pelea)
+                        // Iniciar la escena de batalla
+                        if (pelea==3){
+                            move = false
+                            this.scene.pause('MainScene')
+            
+                            this.scene.launch('BattleScene', { UserFissurial, Fissurials, previousScene: this.scene });
+            
+                        }
+                    }
+                    this.canMove = true;
+                    if (pie == "izquierdo"){
+                        pie = "derecho"
+                    }else if (pie == "derecho"){
+                        pie = "izquierdo"
+                    }
+                    
+                }
+            });
+        }
+        move = true
+
     }
 
     constructor() {
@@ -199,9 +251,16 @@ export default class MainScene extends Scene {
         this.positionData = positionData;
         this.collectedItems = data.collectedItems;
         this.MapItemCords = data.MapItemCords;
+        this.userFissurial = data.userFissurial;
+        this.Fissurials = data.Fissurials;
+
     }
 
     preload() {
+        console.log(this.userFissurial)
+        UserFissurial = this.userFissurial[0];
+        Fissurials = this.Fissurials;
+        console.log(UserFissurial, UserFissurial.id, UserFissurial.fissurial.name)
 
         this.load.audio('backgroundMusic', 'assets/far_away_town.mp3');
         this.cameras.main.setBackgroundColor('#000000');
@@ -224,7 +283,7 @@ export default class MainScene extends Scene {
     }
 
     create() {
-        this.scene.start('BattleScene')
+
         this.saveConfirmationDialog = new SaveConfirmationDialog(this);      
         this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
 
@@ -250,11 +309,11 @@ export default class MainScene extends Scene {
         const OverlapLayer = map.createLayer('Overlap', tileset, 0, 0).setDepth(10);
         const Overlap2Layer = map.createLayer('Overlap2', tileset, 256, 256).setDepth(10);
 
-       
         player = this.physics.add.sprite(player.x,player.y,'prota')
         const { x, y, scene } = this.positionData;
         player.x = x
         player.y = y
+        console.log("Usuari creat a la posició " + x + ", "+ y)
 
 
 
@@ -436,6 +495,7 @@ export default class MainScene extends Scene {
     update() {
         var cursors = this.input.keyboard.createCursorKeys();
         var shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+
         for (const Item of this.items) {
             this.collectItem(player, Item);
         }
