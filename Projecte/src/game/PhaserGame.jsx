@@ -7,7 +7,6 @@ const PhaserGame = ({ gameInstance }) => {
     const gameContainer = document.querySelector('#game-container');
     if (gameContainer){
     gameContainer.style.display = 'block';
-
     }
     useEffect(() => {
 

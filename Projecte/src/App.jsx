@@ -24,6 +24,7 @@ function App() {
     const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'));
     const [userName, setUserName] = useState('');
     const [gameInstance, setGameInstance] = useState(null); // Estado para mantener la instancia del juego
+    console.log(1, gameInstance)
 
 
     useEffect(() => {
@@ -33,7 +34,9 @@ function App() {
     }, [authToken]);
 
     useEffect(() => {
+        
         if (authToken && !gameInstance) {
+            console.log('carga joc')
             // Si hay un token de autenticación y no hay una instancia de juego, crea el juego
             setGameInstance(StartGame("game-container"));
         }
@@ -53,7 +56,6 @@ function App() {
         console.log("hola")
         setAuthToken(response.authToken);
         localStorage.setItem('authToken', response.authToken);
-        setGameInstance(StartGame("game-container"));
     };
 
     const handleLogout = () => {
@@ -64,6 +66,7 @@ function App() {
             // Si hay una instancia de juego, destrúyela al cerrar sesión
             gameInstance.destroy(true);
             setGameInstance(null);
+            console.log(2, gameInstance)
         }
     };
 

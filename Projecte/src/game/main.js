@@ -27,10 +27,8 @@ const config = {
 };
 
 const StartGame = (parent) => {
-    if (!gameInstance) {
-        // Crea el juego solo si la instancia no existe
-        gameInstance = new Phaser.Game({ ...config, parent });
-    }
+    gameInstance = new Phaser.Game({ ...config, parent });
+    
     return gameInstance;
 }
 
