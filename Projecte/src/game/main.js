@@ -1,10 +1,12 @@
+// main.js
+
 import MainScene from './scenes/MainScene';
 import LoadingScene from './scenes/LoadingScene';
 import BattleScene from './scenes/BattleScene';
 import Phaser from 'phaser';
 
-// Find out more information about the Game Config at:
-// https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
+let gameInstance = null; // Mantén una referencia global para la instancia del juego
+
 const config = {
     type: Phaser.AUTO,
     width: 1500,
@@ -25,9 +27,11 @@ const config = {
 };
 
 const StartGame = (parent) => {
-
-    return new Phaser.Game({ ...config, parent });
-
+    if (!gameInstance) {
+        // Crea el juego solo si la instancia no existe
+        gameInstance = new Phaser.Game({ ...config, parent });
+    }
+    return gameInstance;
 }
 
 export default StartGame;

@@ -5,3 +5,11 @@ body {
     background-repeat: no-repeat; /* Evita que la imagen se repita */
   }
   
+  
+#game-container {
+  display: none;
+}
+
+.game #game-container {
+  display: block
+}

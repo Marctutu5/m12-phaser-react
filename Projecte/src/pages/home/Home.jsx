@@ -3,6 +3,11 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import './css/Home.css'; // Importa los estilos específicos para este componente
 
 function Home({ userName }) {
+  const gameContainer = document.querySelector('#game-container');
+  if (gameContainer){
+  gameContainer.style.display = 'none';
+
+  }
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">

@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from '../../auth/AuthService';
 import { Container, Row, Col, Card, ListGroup, Spinner } from 'react-bootstrap';
+import './css/Backpack.css'
 
 function Backpack({ userName }) {
+  const gameContainer = document.querySelector('#game-container');
+  if (gameContainer){
+  gameContainer.style.display = 'none';
+
+  }
   const [wallet, setWallet] = useState(null);
   const [backpack, setBackpack] = useState(null);
   const [userFissurials, setUserFissurials] = useState([]);

@@ -5,6 +5,11 @@ import AuthService from '../../auth/AuthService';
 import './css/Market.css';
 
 const Market = () => {
+  const gameContainer = document.querySelector('#game-container');
+  if (gameContainer){
+  gameContainer.style.display = 'none';
+
+  }
   const [wallet, setWallet] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

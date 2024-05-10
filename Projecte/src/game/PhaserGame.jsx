@@ -1,63 +1,34 @@
+// PhaserGame.jsx
 import PropTypes from 'prop-types';
-import { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
-import StartGame from './main';
+import { useEffect } from 'react';
 import { EventBus } from './EventBus';
 
-export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene }, ref)
-{
-    const game = useRef();
+const PhaserGame = ({ gameInstance }) => {
+    const gameContainer = document.querySelector('#game-container');
+    if (gameContainer){
+    gameContainer.style.display = 'block';
 
-    // Create the game inside a useLayoutEffect hook to avoid the game being created outside the DOM
-    useLayoutEffect(() => {
-        
-        if (game.current === undefined)
-        {
-            game.current = StartGame("game-container");
-            
-            if (ref !== null)
-            {
-                ref.current = { game: game.current, scene: null };
-            }
-        }
-
-        return () => {
-
-            if (game.current)
-            {
-                game.current.destroy(true);
-                game.current = undefined;
-            }
-
-        }
-    }, [ref]);
-
+    }
     useEffect(() => {
 
-        EventBus.on('current-scene-ready', (currentScene) => {
+        const currentSceneReadyHandler = (currentScene) => {
+            // Manejar la escena actualizada
+        };
 
-            if (currentActiveScene instanceof Function)
-            {
-                currentActiveScene(currentScene);
-            }
-            ref.current.scene = currentScene;
-            
-        });
+        EventBus.on('current-scene-ready', currentSceneReadyHandler);
 
         return () => {
+            EventBus.removeListener('current-scene-ready', currentSceneReadyHandler);
+        };
+    }, [gameInstance]);
 
-            EventBus.removeListener('current-scene-ready');
 
-        }
-        
-    }, [currentActiveScene, ref])
-
-    return (
-        <div id="game-container"></div>
-    );
-
-});
+    return <div id='game-page'></div>;
+};
 
 // Props definitions
 PhaserGame.propTypes = {
-    currentActiveScene: PropTypes.func 
-}
+    gameInstance: PropTypes.object.isRequired, // Asegúrate de que gameInstance sea una instancia de Phaser
+};
+
+export default PhaserGame;

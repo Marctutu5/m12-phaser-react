@@ -4,6 +4,11 @@ import AuthService from '../../auth/AuthService';
 import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 
 function Fissurials() {
+  const gameContainer = document.querySelector('#game-container');
+  if (gameContainer){
+  gameContainer.style.display = 'none';
+
+  }
   const [userFissurials, setUserFissurials] = useState([]);
   const [loading, setLoading] = useState(true);
 
