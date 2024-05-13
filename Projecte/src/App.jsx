@@ -25,6 +25,7 @@ function App() {
     const [userName, setUserName] = useState('');
     const [gameInstance, setGameInstance] = useState(null); // Estado para mantener la instancia del juego
     console.log(1, gameInstance)
+    let readyToLoad = true
 
 
     useEffect(() => {
@@ -35,8 +36,9 @@ function App() {
 
     useEffect(() => {
         
-        if (authToken && !gameInstance) {
+        if (authToken && !gameInstance && readyToLoad) {
             console.log('carga joc')
+            readyToLoad = false
             // Si hay un token de autenticación y no hay una instancia de juego, crea el juego
             setGameInstance(StartGame("game-container"));
         }
@@ -67,6 +69,7 @@ function App() {
             gameInstance.destroy(true);
             setGameInstance(null);
             console.log(2, gameInstance)
+            readyToLoad = true
         }
     };
 

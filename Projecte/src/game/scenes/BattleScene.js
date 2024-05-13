@@ -20,13 +20,17 @@ export default class BattleScene extends Scene {
         super('BattleScene');
         this.previousScene = null;
     }
+    preload(){
+        this.load.image('background', 'assets/background_battle.png');
+        this.load.image('button', 'assets/button_battle.png')
+    }
 
     create() {
-        this.background = this.add.image(0, 0, 'assets/bosque.jpg').setOrigin(0);
+        this.background =  this.add.image(512, 256, 'background');
 
         // Ajustar la imagen de fondo para que cubra toda la pantalla
-        this.background.displayWidth = this.game.config.width;
-        this.background.displayHeight = this.game.config.height;
+        this.background.displayWidth = 1980;
+        this.background.displayHeight = 1080;
         this.background.setDepth(-1);
         console.log("fiss", this.Fissurials);
         fissurial_quant = this.Fissurials.length;
@@ -47,8 +51,9 @@ export default class BattleScene extends Scene {
         let i = 1;
         this.UserFissurial.fissurial.attacks.forEach((attack) => {
             i++;
-            const button = this.add.text(150 * i, 400, attack.name, { fontSize: '18px', fill: '#fff' }).setInteractive();
-            button.on('pointerdown', () => {
+            const button = this.add.image(150 * i, 400, 'button')
+            .setInteractive()
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                 if (!this.attackCooldown) {
                     this.performAttack(attack);
                     this.attackCooldown = true;
@@ -58,7 +63,11 @@ export default class BattleScene extends Scene {
                         this.enablePlayerAttacks();
                     });
                 }
-            });
+            })
+            const text = this.add.text(150 * i, 400, attack.name, { color: 'black' })
+            .setOrigin(0.5, 0.5);
+            button.displayWidth = 150;
+            button.displayHeight = 75;
             this.attackButtons.push(button);
         });
     }
