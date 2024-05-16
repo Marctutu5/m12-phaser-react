@@ -8,6 +8,9 @@ let UserFissurial
 let Fissurials
 let move = true
 
+var battle2
+var battle1
+var backgroundMusic
 
 export default class MainScene extends Scene {
 
@@ -153,6 +156,15 @@ export default class MainScene extends Scene {
         return newItem;
     }
 
+    stopBattleMusic() {
+        if (battle2.isPlaying){
+            battle2.stop();
+        } else if (battle1.isPlaying){
+            battle1.stop();
+        }
+        backgroundMusic.play();
+    }
+
     movePlayer(deltaX, deltaY) {
         if (move == true) {
             this.canMove = false; 
@@ -176,6 +188,11 @@ export default class MainScene extends Scene {
                         if (pelea==3){
                             move = false
                             this.scene.pause('MainScene')
+                            backgroundMusic.stop();
+                            battle1.play();
+                            battle1.on('complete', () => {
+                                battle2.play();
+                            });
             
                             this.scene.launch('BattleScene', { UserFissurial, Fissurials, previousScene: this.scene });
             
@@ -217,6 +234,11 @@ export default class MainScene extends Scene {
                         if (pelea==3){
                             move = false
                             this.scene.pause('MainScene')
+                            backgroundMusic.stop();
+                            battle1.play();
+                            battle1.on('complete', () => {
+                                battle2.play();
+                            });
             
                             this.scene.launch('BattleScene', { UserFissurial, Fissurials, previousScene: this.scene });
             
@@ -263,6 +285,8 @@ export default class MainScene extends Scene {
         console.log(UserFissurial, UserFissurial.id, UserFissurial.fissurial.name)
 
         this.load.audio('backgroundMusic', 'assets/far_away_town.mp3');
+        this.load.audio('battle1', 'assets/battle.mp3');
+        this.load.audio('battle2', 'assets/battle2.mp3');
         this.cameras.main.setBackgroundColor('#000000');
         // Carga del tileset y del archivo JSON del mapa
         this.load.image('tileset', 'assets/fullextruded2.png');
@@ -285,10 +309,12 @@ export default class MainScene extends Scene {
     create() {
 
         this.saveConfirmationDialog = new SaveConfirmationDialog(this);      
-        this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
+        backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
+        battle1 = this.sound.add('battle1', { loop: false });
+        battle2 = this.sound.add('battle2', { loop: true });
 
         // Iniciar la reproducción de la música de fondo
-        this.backgroundMusic.play();
+        backgroundMusic.play();
 
         // Creación del mapa basado en el archivo JSON cargado
         const map = this.make.tilemap({ key: 'map' });

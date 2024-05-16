@@ -3,6 +3,9 @@ import { Scene } from 'phaser';
 let fissurial_quant;
 let enemy_fissurial;
 let fissurial_random;
+let currentMessage = null;
+
+
 
 export default class BattleScene extends Scene {
     constructor() {
@@ -47,9 +50,22 @@ export default class BattleScene extends Scene {
     preload() {
         this.load.image('background', 'assets/background_battle.png');
         this.load.image('button', 'assets/button_battle.png');
+        this.load.image('Drago', 'assets/drago.png');
+        this.load.image('Griffin', 'assets/griffin.png');
+        this.load.image('Minotaur', 'assets/toro.png');
+        this.load.image('Leviathan', 'assets/levi.png');
+        this.load.image('Fenix', 'assets/phoenix.png');
+        this.load.image('textbox', 'assets/textbox.png');
+
+
+
     }
 
     create() {
+
+
+
+
         this.background = this.add.image(512, 256, 'background');
 
         // Ajustar la imagen de fondo para que cubra toda la pantalla
@@ -57,8 +73,9 @@ export default class BattleScene extends Scene {
         this.background.displayHeight = 1080;
         this.background.setDepth(-1);
 
-        this.enemyHealthBar = this.makeBar(1100, 100, 0x2ecc71);
-        this.playerHealthBar = this.makeBar(100, 300, 0x2ecc71);  // Cambié la posición Y para que no se solapen
+       
+        this.enemyHealthBar = this.makeBar(1100, 50, 0x2ecc71);
+        this.playerHealthBar = this.makeBar(100, 50, 0x2ecc71);  // Cambié la posición Y para que no se solapen
 
         this.setValue(this.enemyHealthBar, 100);
         this.setValue(this.playerHealthBar, 100);
@@ -75,10 +92,28 @@ export default class BattleScene extends Scene {
         this.playerHealth = this.UserFissurial.current_life;
         this.playerHealthNow = this.UserFissurial.current_life;
 
-        this.playerHealthText = this.add.text(100, 275, this.UserFissurial.fissurial.name, { fontSize: '18px', fill: '#fff' });
-        this.enemyHealthText = this.add.text(1100, 75, 'Wild ' +enemy_fissurial.name, { fontSize: '18px', fill: '#fff' });
+        this.playerHealthText = this.add.text(100, 25, this.UserFissurial.fissurial.name, { fontSize: '18px', fill: '#fff' });
+        this.enemyHealthText = this.add.text(1100, 25, 'Wild ' +enemy_fissurial.name, { fontSize: '18px', fill: '#fff' });
 
-        this.add.text(50, 100, '¡Ha aparecido un ' + enemy_fissurial.name + ' salvaje!', { fontSize: '24px', fill: '#fff' });
+        this.enemyImage = this.add.image(1250, 250, enemy_fissurial.name);
+
+        this.enemyImage.displayWidth = 350
+        this.enemyImage.displayHeight = 350;
+        this.enemyImage.setDepth(0);
+
+        this.playerImage = this.add.image(250, 250, this.UserFissurial.fissurial.name);
+
+        this.playerImage.displayWidth = 350
+        this.playerImage.displayHeight = 350;
+        this.playerImage.setDepth(0);
+
+        this.playerImage.flipX=true;
+
+
+        this.showMessage('¡Ha aparecido un ' + enemy_fissurial.name + ' salvaje!');
+        this.time.delayedCall(2000, () => {
+            this.showMessage('Que quieres hacer?');
+        });
 
         this.attackButtons = [];
         let i = 1;
@@ -115,6 +150,9 @@ export default class BattleScene extends Scene {
             if (this.enemyHealthNow <= 0) {
                 this.setValue(this.enemyHealthBar, 0);
                 this.showMessage('¡Has derrotado al ' + enemy_fissurial.name + ' salvaje con ' + attack.name + '!');
+                this.time.delayedCall(3000, () => {
+                    this.showMessage('¡Has ganado 250$!');
+                });
 
             }else {
                 this.setValue(this.enemyHealthBar, ((this.enemyHealthNow / this.enemyHealth) * 100));
@@ -130,6 +168,9 @@ export default class BattleScene extends Scene {
             if (this.enemyHealthNow <= 0) {
                 this.setValue(this.enemyHealthBar, 0);
                 this.showMessage('¡Has derrotado al ' + enemy_fissurial.name + ' salvaje con ' + attack.name + '!');
+                this.time.delayedCall(3000, () => {
+                    this.showMessage('¡Has ganado 250$!');
+                });
 
             }else {
                 this.setValue(this.enemyHealthBar, ((this.enemyHealthNow / this.enemyHealth) * 100));
@@ -145,6 +186,10 @@ export default class BattleScene extends Scene {
             if (this.enemyHealthNow <= 0) {
                 this.setValue(this.enemyHealthBar, 0);
                 this.showMessage('¡Has derrotado al ' + enemy_fissurial.name + ' salvaje con ' + attack.name + '!');
+                this.time.delayedCall(3000, () => {
+                    this.showMessage('¡Has ganado 250$!');
+                });
+
 
             }else {
                 this.setValue(this.enemyHealthBar, ((this.enemyHealthNow / this.enemyHealth) * 100));
@@ -159,10 +204,13 @@ export default class BattleScene extends Scene {
         if (this.enemyHealthNow <= 0) {
             setTimeout(() => {  
                 console.log('¡Enemigo derrotado!');
+                
                 this.scene.stop('BattleScene');
+                const mainScene = this.scene.get('MainScene');
+                mainScene.stopBattleMusic();
                 this.scene.resume('MainScene');
                 return;
-            }, 2000);
+            }, 6000);
         }else {
             this.time.delayedCall(3000, this.performEnemyAttack, [], this);
         }
@@ -180,6 +228,10 @@ export default class BattleScene extends Scene {
             if (this.playerHealthNow <= 0) {
                 this.setValue(this.playerHealthBar, 0);
                 this.showMessage('¡Tu ' + this.UserFissurial.fissurial.name +' ha sido derrotado con ' + enemyAttack.name + '!');
+                this.time.delayedCall(3000, () => {
+                    this.showMessage('¡Se te enviara al centro de recuperación!');
+                });
+
 
             }else {
                 this.setValue(this.playerHealthBar, ((this.playerHealthNow / this.playerHealth) * 100));
@@ -195,6 +247,10 @@ export default class BattleScene extends Scene {
             if (this.playerHealthNow <= 0) {
                 this.setValue(this.playerHealthBar,0);
                 this.showMessage('¡Tu ' + this.UserFissurial.fissurial.name +' ha sido derrotado con ' + enemyAttack.name + '!');
+                this.time.delayedCall(3000, () => {
+                    this.showMessage('¡Se te enviara al centro de recuperación!');
+                });
+
 
             }else {
                 this.setValue(this.playerHealthBar, ((this.playerHealthNow / this.playerHealth) * 100));
@@ -210,24 +266,36 @@ export default class BattleScene extends Scene {
             if (this.playerHealthNow <= 0) {
                 this.setValue(this.playerHealthBar, 0);
                 this.showMessage('¡Tu ' + this.UserFissurial.fissurial.name +' ha sido derrotado con ' + enemyAttack.name + '!');
+                this.time.delayedCall(3000, () => {
+                    this.showMessage('¡Se te enviara al centro de recuperación!');
+                });
 
             }else {
                 this.setValue(this.playerHealthBar, ((this.playerHealthNow / this.playerHealth) * 100));
 
                 this.showMessage('¡El enemigo asestó un golpe crítico con ' + enemyAttack.name + '!');
+                
 
             }
             
 
         }
 
+        
+
         if (this.playerHealthNow <= 0) {
             setTimeout(() => {  
                 console.log('¡Jugador derrotado!');
                 this.scene.stop('BattleScene');
+                const mainScene = this.scene.get('MainScene');
+                mainScene.stopBattleMusic();
                 this.scene.resume('MainScene');
                 return;
-            }, 2000);
+            }, 6000);
+        }else{
+            this.time.delayedCall(3000, () => {
+                this.showMessage('¡Tu turno !');
+            });
         }
     }
 
@@ -244,9 +312,34 @@ export default class BattleScene extends Scene {
     }
 
     showMessage(message) {
-        const messageText = this.add.text(50, 500, message, { fontSize: '18px', fill: '#fff' });
-        this.time.delayedCall(2000, () => {
-            messageText.destroy();
-        });
+        // Si ya existe un mensaje, destruirlo
+        if (currentMessage) {
+            currentMessage.text.destroy();
+            currentMessage.box.destroy();
+        }
+
+        // Crear y agregar la imagen de fondo del mensaje
+        const messageBox = this.add.image(400, 500, 'textbox').setOrigin(0.5, 0.5).setDepth(1);
+        
+        // Ajustar el tamaño de la imagen del mensaje si es necesario
+        messageBox.displayWidth = 600; // Ajustar según el tamaño deseado
+        messageBox.displayHeight = 100; // Ajustar según el tamaño deseado
+        
+        // Crear el texto del mensaje y centrarlo en la imagen del fondo
+        const messageText = this.add.text(400, 500, message, { 
+            fontSize: '18px', 
+            fill: '#000000',
+            wordWrap: { width: messageBox.displayWidth - 40 } // Ajustar el ancho del texto
+        }).setOrigin(0.5, 0.5).setDepth(2);
+
+        // Almacenar la referencia del mensaje actual
+        currentMessage = {
+            text: messageText,
+            box: messageBox
+        };
+
+        // Destruir la imagen y el texto después de 2 segundos
+
     }
+
 }
