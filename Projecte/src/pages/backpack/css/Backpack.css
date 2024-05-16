@@ -1,6 +1,28 @@
-/* Backpack.css */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.bg-dark {
+  background-color: #1a1a1a !important; /* Fondo oscuro */
+}
+
+.text-neon-green {
+  color: #39ff14 !important; /* Color verde neon */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+  font-weight: bold;
+}
+
+.border-neon-green {
+  border-color: #39ff14 !important; /* Borde verde neon */
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+}
+
 .backpack-img {
-    max-height: 200px;
-    object-fit: cover;
-  }
-  
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.card-title, .card-text, .card-body {
+  color: #39ff14 !important; /* Color verde neon */
+}

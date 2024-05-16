@@ -1,23 +1,56 @@
-/* Market.css */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.full-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1a1a1a; /* Fondo oscuro para toda la página */
+  padding: 20px; /* Añade padding alrededor del contenido */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-neon-green {
+  color: #39ff14 !important; /* Color verde neón */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+  font-weight: bold;
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+}
+
+.nav-link {
+  color: #39ff14 !important; /* Color verde neón */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+}
+
 .nav-link.active {
-    font-weight: bold;
-  }
-  
-  .wallet-card {
-    margin-top: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .wallet-card .card-body {
-    padding: 20px;
-  }
-  
-  .wallet-card .card-title {
-    font-size: 1.2rem;
-  }
-  
-  .wallet-card .card-text {
-    font-size: 1.1rem;
-  }
-  
+  color: #00ff00 !important; /* Color verde neón al estar activo */
+}
+
+.bg-dark {
+  background-color: #1a1a1a !important; /* Fondo oscuro */
+}
+
+.border-neon-green {
+  border-color: #39ff14 !important; /* Borde verde neón */
+}
+
+.wallet-card {
+  margin-top: 20px;
+  border: 1px solid #39ff14; /* Borde verde neón */
+  border-radius: 5px;
+}
+
+.wallet-card .card-body {
+  padding: 20px;
+}
+
+.wallet-card .card-title {
+  font-size: 1.2rem;
+}
+
+.wallet-card .card-text {
+  font-size: 1.1rem;
+}

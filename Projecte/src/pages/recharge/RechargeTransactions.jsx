@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Table, Alert, Spinner } from 'react-bootstrap';
+import { Table, Alert, Spinner } from 'react-bootstrap';
 import AuthService from '../../auth/AuthService';
+import './css/RechargeTransactions.css'; // Importa el archivo CSS
 
 const RechargeTransactions = () => {
     const [recharges, setRecharges] = useState([]);
@@ -24,11 +25,11 @@ const RechargeTransactions = () => {
     }, []);
 
     return (
-        <Container className="mt-3">
-            <h2 className="text-center mb-4">Recharge History</h2>
+        <div className="full-page mt-3">
+            <h2 className="text-center mb-4 text-neon-green font-orbitron">Recharge History</h2>
             {loading ? (
                 <div className="text-center mt-3">
-                    <Spinner animation="border" role="status">
+                    <Spinner animation="border" role="status" className="text-neon-green">
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 </div>
@@ -36,9 +37,9 @@ const RechargeTransactions = () => {
                 <>
                     {error && <Alert variant="danger">{error}</Alert>}
                     {recharges.length === 0 ? (
-                        <p className="text-center">No recharges made yet.</p>
+                        <p className="text-center text-neon-green">No recharges made yet.</p>
                     ) : (
-                        <Table striped bordered hover>
+                        <Table striped bordered hover variant="dark" className="text-neon-green">
                             <thead>
                                 <tr>
                                     <th>Transaction ID</th>
@@ -67,7 +68,7 @@ const RechargeTransactions = () => {
                     )}
                 </>
             )}
-        </Container>
+        </div>
     );
 };
 

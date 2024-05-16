@@ -1,7 +1,7 @@
-// Fissurials.jsx
 import React, { useState, useEffect } from 'react';
 import AuthService from '../../auth/AuthService';
-import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
+import { Row, Col, Card, Spinner } from 'react-bootstrap';
+import './css/Fissurials.css'; // Importa el archivo CSS
 
 function Fissurials() {
   const [userFissurials, setUserFissurials] = useState([]);
@@ -22,17 +22,17 @@ function Fissurials() {
   }, []);
 
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-center">
-        <Col xs={12} md={12} lg={12}>
-          <Card>
+    <div className="full-page">
+      <Row className="justify-content-center mt-5">
+        <Col xs={12}>
+          <Card className="bg-dark text-neon-green border-neon-green">
             <Card.Body>
-              <Card.Title className="text-center h2">All User Fissurials</Card.Title>
+              <Card.Title className="text-center h2 font-orbitron">All User Fissurials</Card.Title>
               {userFissurials.length > 0 ? (
                 <Row>
                   {userFissurials.map((userFissurial) => (
                     <Col xs={6} sm={4} md={3} className="mb-4" key={userFissurial.id}>
-                      <Card>
+                      <Card className="bg-dark text-neon-green border-neon-green">
                         <Card.Img
                           variant="top"
                           src={`http://127.0.0.1:8000/${userFissurial.fissurial.photo}`}
@@ -40,7 +40,7 @@ function Fissurials() {
                         />
                         <Card.Body>
                           <Card.Title>{userFissurial.fissurial.name}</Card.Title>
-                          <h5>User: {userFissurial.user.name} </h5>
+                          <h5>User: {userFissurial.user.name}</h5>
                           <ul>
                             <li>HP: {userFissurial.current_life}</li>
                           </ul>
@@ -56,7 +56,7 @@ function Fissurials() {
               )}
               {loading && (
                 <div className="text-center mt-3">
-                  <Spinner animation="border" role="status">
+                  <Spinner animation="border" role="status" className="text-neon-green">
                     <span className="visually-hidden">Loading...</span>
                   </Spinner>
                 </div>
@@ -65,7 +65,7 @@ function Fissurials() {
           </Card>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 }
 

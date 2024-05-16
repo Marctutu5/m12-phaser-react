@@ -20,6 +20,15 @@
   font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
 }
 
+.nav-link {
+  color: #39ff14 !important; /* Color verde neón */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+}
+
+.nav-link.active {
+  color: #00ff00 !important; /* Color verde neón al estar activo */
+}
+
 .bg-dark {
   background-color: #1a1a1a !important; /* Fondo oscuro */
 }
@@ -31,35 +40,4 @@
 .coin-img {
   max-height: 200px;
   object-fit: cover;
-}
-
-.selected-item {
-  border-color: #007bff;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-}
-
-.card {
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  width: 100%;
-}
-
-.card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-button.bg-neon-green {
-  background-color: #39ff14 !important;
-  color: #1a1a1a !important;
-  border-color: #39ff14 !important;
-}
-
-button.bg-neon-green:hover {
-  background-color: #2ecc71 !important;
-  border-color: #2ecc71 !important;
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { PayPalButtons, FUNDING } from "@paypal/react-paypal-js";
-import { Card, Row, Col, Container } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import AuthService from "../../auth/AuthService";
+import './css/RechargeOffers.css'; // Importa el archivo CSS
 
 const coinPackages = [
     { price: '1.99', coins: 1000, description: '1000 Coins', imageUrl: 'http://127.0.0.1:8000/storage/Coin.jpg' },
@@ -14,13 +15,13 @@ const coinPackages = [
 
 function RechargeOffers() {
     return (
-        <Container>
-            <h2 className="text-center mt-4 mb-4">Recharge Offers</h2>
+        <div className="full-page">
+            <h2 className="text-center mt-4 mb-4 text-neon-green font-orbitron">Recharge Offers</h2>
             <Row xs={1} md={2} lg={3} className="g-4">
                 {coinPackages.map((coinPackage, idx) => (
                     <Col key={idx}>
-                        <Card>
-                            <Card.Img variant="top" src={coinPackage.imageUrl} alt="Coin Package"/>
+                        <Card className="bg-dark text-neon-green border-neon-green">
+                            <Card.Img variant="top" src={coinPackage.imageUrl} alt="Coin Package" className="coin-img"/>
                             <Card.Body>
                                 <Card.Title>{coinPackage.description}</Card.Title>
                                 <Card.Text>
@@ -39,7 +40,7 @@ function RechargeOffers() {
                     </Col>
                 ))}
             </Row>
-        </Container>
+        </div>
     );
 }
 

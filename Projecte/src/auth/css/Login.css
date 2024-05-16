@@ -1,15 +1,26 @@
-/* Estilo CSS para el login */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.full-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1a1a1a; /* Fondo oscuro para toda la página */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .login-container {
   max-width: 400px;
-  margin: 20px auto;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #39ff14; /* Borde verde neón */
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background-color: #1a1a1a;
 }
 
 .login-container h2 {
   text-align: center;
+  color: #39ff14; /* Color verde neón */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
 }
 
 .login-form {
@@ -18,15 +29,24 @@
 
 .login-form label {
   font-weight: bold;
+  color: #39ff14; /* Color verde neón */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
 }
 
 .login-form input {
   width: 100%;
   margin-bottom: 10px;
+  background-color: #333;
+  color: #39ff14; /* Color verde neón */
+  border: 1px solid #39ff14; /* Borde verde neón */
 }
 
 .login-form .btn-primary {
   width: 100%;
+  background-color: #39ff14; /* Fondo verde neón */
+  border: 1px solid #39ff14; /* Borde verde neón */
+  color: #1a1a1a; /* Color del texto */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
 }
 
 .login-form .alert {

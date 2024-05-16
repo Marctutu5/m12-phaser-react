@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Container, Nav, Card, Alert, Spinner } from 'react-bootstrap';
+import { Nav, Card, Alert, Spinner } from 'react-bootstrap';
 import AuthService from '../../auth/AuthService';
 import './css/Market.css';
 
@@ -26,33 +26,33 @@ const Market = () => {
   }, []);
 
   return (
-    <Container className="mt-5">
-      <h1 className="text-center mb-4">Market</h1>
-      <Nav variant="tabs" className="mb-3">
+    <div className="full-page mt-5">
+      <h1 className="text-center mb-4 text-neon-green font-orbitron">Market</h1>
+      <Nav variant="tabs" className="mb-3 justify-content-center">
         <Nav.Item>
-          <NavLink to="/market/buy" className="nav-link" activeClassName="active">
+          <NavLink to="/market/buy" className="nav-link text-neon-green" activeClassName="active">
             Buy
           </NavLink>
         </Nav.Item>
         <Nav.Item>
-          <NavLink to="/market/sell" className="nav-link" activeClassName="active">
+          <NavLink to="/market/sell" className="nav-link text-neon-green" activeClassName="active">
             Sell
           </NavLink>
         </Nav.Item>
         <Nav.Item>
-          <NavLink to="/market/manage" className="nav-link" activeClassName="active">
+          <NavLink to="/market/manage" className="nav-link text-neon-green" activeClassName="active">
             Manage
           </NavLink>
         </Nav.Item>
         <Nav.Item>
-          <NavLink to="/market/transaction" className="nav-link" activeClassName="active">
+          <NavLink to="/market/transaction" className="nav-link text-neon-green" activeClassName="active">
             Transactions
           </NavLink>
         </Nav.Item>
       </Nav>
       {loading ? ( // Mostrar spinner mientras se cargan los datos
         <div className="text-center mt-3">
-          <Spinner animation="border" role="status">
+          <Spinner animation="border" role="status" className="text-neon-green">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
@@ -60,7 +60,7 @@ const Market = () => {
         <>
           {error && <Alert variant="danger">{error}</Alert>}
           {wallet && (
-            <Card className="wallet-card">
+            <Card className="wallet-card bg-dark text-neon-green border-neon-green">
               <Card.Body>
                 <Card.Title className="text-center">Your Wallet</Card.Title>
                 <Card.Text className="text-center">Coins: {wallet.coins}$</Card.Text>
@@ -70,7 +70,7 @@ const Market = () => {
           <Outlet />
         </>
       )}
-    </Container>
+    </div>
   );
 };
 

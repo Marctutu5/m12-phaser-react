@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
+import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import AuthService from './AuthService';
 import { useNavigate } from 'react-router-dom';
 import AuthToggle from './component/AuthToggle';
-import './css/Login.css'
+import './css/Login.css';
 
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
@@ -39,39 +39,40 @@ function Login({ onLoginSuccess }) {
   };
 
   return (
-    <Container className="login-container">
-      <div>
-        <h2>Login</h2>
+    <div className="full-page">
+      <div className="login-container">
+        <h2 className="text-center text-neon-green font-orbitron">Login</h2>
         <Form className="login-form">
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email</Form.Label>
+            <Form.Label className="text-neon-green">Email</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               disabled={loading}
+              className="bg-dark text-neon-green border-neon-green"
             />
           </Form.Group>
           <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label className="text-neon-green">Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               disabled={loading}
+              className="bg-dark text-neon-green border-neon-green"
             />
           </Form.Group>
-          <Button variant="primary" onClick={handleLogin} disabled={loading}>
+          <Button variant="primary" onClick={handleLogin} disabled={loading} className="bg-neon-green text-dark border-neon-green">
             {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Log In'}
           </Button>
           {error && <Alert variant="danger" className={`mt-3 ${error ? 'show' : ''}`}>{error}</Alert>}
           <AuthToggle isRegisterView={false} /> {/* Botón para cambiar a la vista de registro */}
         </Form>
       </div>
-    </Container>
-
+    </div>
   );
 }
 

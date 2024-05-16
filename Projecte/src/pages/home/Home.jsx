@@ -1,15 +1,15 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 import './css/Home.css'; // Importa los estilos específicos para este componente
 
 function Home({ userName }) {
   return (
-    <Container className="mt-5">
+    <div className="full-page mt-5">
       <Row className="justify-content-center">
         <Col xs={12} md={8}>
-          <Card className="home-card">
+          <Card className="home-card bg-dark text-neon-green border-neon-green">
             <Card.Body>
-              <Card.Title className="home-title">Welcome to Riftward: Guardians of Mithra, explorer {userName}!</Card.Title>
+              <Card.Title className="home-title text-neon-green font-orbitron">Welcome to Riftward: Guardians of Mithra, explorer {userName}!</Card.Title>
               <Card.Text className="home-text">
                 Two millennia ago, in the northern region of Mithra, an unprecedented phenomenon emerged: from the depths of a dormant volcano, a fissure in the fabric of space-time, known as the Abyssal Fissure, spewed forth a horde of mysterious and varied creatures. These beings, known as the Fissurians, emerged in a myriad of colors and forms, baffling scientists and leaving an indelible mark on Mithra's history.
               </Card.Text>
@@ -29,7 +29,7 @@ function Home({ userName }) {
           </Card>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 }
 

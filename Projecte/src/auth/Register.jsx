@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Alert, Modal } from 'react-bootstrap';
+import { Form, Button, Alert, Modal } from 'react-bootstrap';
 import AuthService from './AuthService';
 import AuthToggle from './component/AuthToggle';
 import { useNavigate } from 'react-router-dom';
@@ -54,38 +54,41 @@ function Register() {
   };
 
   return (
-    <Container className="register-container">
-      <div className="register-form">
-        <h2 className="text-center">Registro</h2>
+    <div className="full-page">
+      <div className="register-container">
+        <h2 className="text-center text-neon-green font-orbitron">Registro</h2>
         <Form>
           <Form.Group controlId="formBasicName">
-            <Form.Label>Nombre</Form.Label>
+            <Form.Label className="text-neon-green">Nombre</Form.Label>
             <Form.Control
               type="text"
               placeholder="Ingrese su nombre"
               value={name}
               onChange={(e) => setName(e.target.value)}
               disabled={loading}
+              className="bg-dark text-neon-green border-neon-green"
             />
           </Form.Group>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email</Form.Label>
+            <Form.Label className="text-neon-green">Email</Form.Label>
             <Form.Control
               type="email"
               placeholder="Ingrese su email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
+              className="bg-dark text-neon-green border-neon-green"
             />
           </Form.Group>
           <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label className="text-neon-green">Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Ingrese su contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
+              className="bg-dark text-neon-green border-neon-green"
             />
           </Form.Group>
           <Button
@@ -93,6 +96,7 @@ function Register() {
             onClick={handleRegister}
             disabled={loading}
             block
+            className="bg-neon-green text-dark border-neon-green"
           >
             {loading ? 'Registrando...' : 'Registrarse'}
           </Button>
@@ -111,7 +115,7 @@ function Register() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </Container>
+    </div>
   );
 }
 

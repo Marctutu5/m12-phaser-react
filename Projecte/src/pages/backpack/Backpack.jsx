@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from '../../auth/AuthService';
 import { Container, Row, Col, Card, ListGroup, Spinner } from 'react-bootstrap';
+import './css/Backpack.css'; // Importa el archivo CSS
 
 function Backpack({ userName }) {
   const [wallet, setWallet] = useState(null);
@@ -41,12 +42,12 @@ function Backpack({ userName }) {
     <Container className="mt-5">
       <Row className="justify-content-center">
         <Col xs={12} md={12} lg={12}>
-          <Card>
+          <Card className="bg-dark text-neon-green border-neon-green">
             <Card.Body>
-              <Card.Title className="text-center h2">Welcome, {userName}!</Card.Title>
+              <Card.Title className="text-center h2 font-orbitron">Welcome, {userName}!</Card.Title>
               {wallet && (
-                <ListGroup variant="flush">
-                  <ListGroup.Item>
+                <ListGroup variant="flush" className="text-neon-green">
+                  <ListGroup.Item className="bg-dark border-neon-green">
                     <h4>Wallet</h4>
                     <p>Coins: {wallet.coins}$</p>
                   </ListGroup.Item>
@@ -54,14 +55,15 @@ function Backpack({ userName }) {
               )}
               {backpack && (
                 <Row>
-                  <h4 className="mt-3 mb-3">Backpack Items</h4>
+                  <h4 className="mt-3 mb-3 font-orbitron">Backpack Items</h4>
                   {backpack.map((item) => (
-                    <Col xs={6} sm={4} md={3} className="mb-4" key={item.item.id}>
-                      <Card>
+                    <Col xs={6} sm={4} md={3} lg={4} className="mb-4" key={item.item.id}>
+                      <Card className="bg-dark text-neon-green border-neon-green">
                         <Card.Img
                           variant="top"
                           src={item.item.photo}
                           alt={item.item.name}
+                          className="backpack-img"
                         />
                         <Card.Body>
                           <Card.Title>{item.item.name}</Card.Title>
@@ -74,14 +76,15 @@ function Backpack({ userName }) {
               )}
               {userFissurials && Array.isArray(userFissurials) && (
                 <Row>
-                  <h4 className="mt-3 mb-3">Your Fissurials</h4>
+                  <h4 className="mt-3 mb-3 font-orbitron">Your Fissurials</h4>
                   {userFissurials.map((uf) => (
                     <Col xs={6} sm={4} md={3} className="mb-4" key={uf.fissurial.id}>
-                      <Card>
+                      <Card className="bg-dark text-neon-green border-neon-green">
                         <Card.Img
                           variant="top"
                           src={`http://127.0.0.1:8000/${uf.fissurial.photo}`}
                           alt={uf.fissurial.name}
+                          className="backpack-img"
                         />
                         <Card.Body>
                           <Card.Title>{uf.fissurial.name}</Card.Title>
@@ -104,7 +107,7 @@ function Backpack({ userName }) {
               )}
               {loading && (
                 <div className="text-center mt-3">
-                  <Spinner animation="border" role="status">
+                  <Spinner animation="border" role="status" className="text-neon-green">
                     <span className="visually-hidden">Loading...</span>
                   </Spinner>
                 </div>

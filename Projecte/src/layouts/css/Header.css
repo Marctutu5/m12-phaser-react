@@ -1,22 +1,52 @@
-.navbar {
-    background-color: #ffffff; /* Color de fondo */
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
-    padding: 0 20px; /* Espaciado interno */
-  }
-  
-  .navbar-brand {
-    font-weight: bold; /* Negrita */
-    font-size: 1.5rem; /* Tamaño de fuente */
-  }
-  
-  .nav-link {
-    color: #343a40 !important; /* Color del enlace */
-  }
-  
-  .nav-link:hover {
-    color: #007bff !important; /* Color del enlace al pasar el mouse */
-  }
-  
-  .navbar-text {
-    margin-right: 20px; /* Espaciado a la derecha */
-  }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.gaming-header {
+  background-color: #1a1a1a; /* Color de fondo oscuro */
+  border-bottom: 2px solid #39ff14; /* Borde inferior verde neon */
+}
+
+.navbar-brand {
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+  font-weight: bold;
+  font-size: 1.75rem; /* Tamaño de fuente */
+  color: #39ff14; /* Color verde neon */
+}
+
+.navbar-brand:hover {
+  color: #00ff00; /* Color verde neon al pasar el mouse */
+}
+
+.nav-link {
+  color: #39ff14 !important; /* Color del enlace verde neon */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: #00ff00 !important; /* Color del enlace al pasar el mouse */
+}
+
+.navbar-toggler {
+  border-color: #39ff14; /* Color del borde del toggler */
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%2339ff14' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.text-secondary {
+  color: #6c757d !important;
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+}
+
+.text-neon-green {
+  color: #39ff14; /* Color verde neon */
+}
+
+.text-neon-green:hover {
+  color: #00ff00; /* Color verde neon al pasar el mouse */
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}

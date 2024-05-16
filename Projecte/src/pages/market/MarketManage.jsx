@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from '../../auth/AuthService';
-import { Container, Row, Col, Card, Button, Alert, Spinner } from 'react-bootstrap';
+import { Row, Col, Card, Button, Alert, Spinner } from 'react-bootstrap';
 import './css/MarketManage.css'; // Estilos específicos para este componente
 
 const MarketManage = () => {
   const [listings, setListings] = useState([]);
-  const [loading, setLoading] = useState(true); // Nuevo estado para controlar la carga
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -35,22 +35,22 @@ const MarketManage = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <h1 className="text-center">Manage Your Listings</h1>
+    <div className="full-page mt-5">
+      <h1 className="text-center text-neon-green font-orbitron">Manage Your Listings</h1>
       {loading ? ( // Mostrar spinner mientras se cargan los datos
         <div className="text-center mt-3">
-          <Spinner animation="border" role="status">
+          <Spinner animation="border" role="status" className="text-neon-green">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
       ) : (
         <>
           {error && <Alert variant="danger">{error}</Alert>}
-          <Row>
+          <Row class='w-100'>
             {listings.map(listing => (
-              <Col key={listing.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-                <Card className="listing-card">
-                  <Card.Img variant="top" src={listing.item.photo || 'default_image_url.jpg'} alt={listing.item.name} />
+              <Col xs={12} sm={4} md={2} lg={3} className="mb-4 w-100" key={listing.id}>
+                <Card className="listing-card bg-dark text-neon-green border-neon-green">
+                  <Card.Img variant="top" src={listing.item.photo || 'default_image_url.jpg'} alt={listing.item.name} className="coin-img"/>
                   <Card.Body>
                     <Card.Title>{listing.item.name}</Card.Title>
                     <Card.Text>Price: ${listing.price}</Card.Text>
@@ -63,7 +63,7 @@ const MarketManage = () => {
           </Row>
         </>
       )}
-    </Container>
+    </div>
   );
 };
 

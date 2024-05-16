@@ -1,13 +1,26 @@
+.gaming-footer {
+  background-color: #1a1a1a; /* Fondo oscuro */
+  border-top: 2px solid #39ff14; /* Borde superior verde neon */
+}
+
+.text-neon-green {
+  color: #39ff14; /* Color verde neon */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+  font-weight: bold;
+}
+
+.text-neon-green:hover {
+  color: #00ff00; /* Color verde neon al pasar el mouse */
+}
+
 .footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f8f9fa; /* Fondo claro */
-    padding-top: 20px; /* Padding vertical */
-    padding-bottom: 20px; /* Padding vertical */
-  }
-  
-  .container {
-    width: 100%;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px; /* Padding vertical */
+  padding-bottom: 20px; /* Padding vertical */
+}
+
+.container {
+  width: 100%;
+}

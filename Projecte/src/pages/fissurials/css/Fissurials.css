@@ -7,21 +7,28 @@
   padding: 20px; /* Añade padding alrededor del contenido */
 }
 
-.home-card {
+.bg-dark {
   background-color: #1a1a1a !important; /* Fondo oscuro */
-  border: 1px solid #39ff14 !important; /* Borde verde neón */
 }
 
-.home-title {
+.text-neon-green {
   color: #39ff14 !important; /* Color verde neón */
-  font-size: 24px;
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
   font-weight: bold;
-  margin-bottom: 20px;
+}
+
+.border-neon-green {
+  border-color: #39ff14 !important; /* Borde verde neón */
+}
+
+.font-orbitron {
   font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
 }
 
-.home-text {
+.card-title, .card-text, .card-body {
   color: #39ff14 !important; /* Color verde neón */
-  font-size: 16px;
-  line-height: 1.6;
+}
+
+.text-center {
+  color: #39ff14 !important; /* Color verde neón */
 }

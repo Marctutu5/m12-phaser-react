@@ -1,7 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
 body {
-    background-image: white; /* Cambia esta ruta a la ubicación de tu imagen de fondo */
-    background-size: cover; /* Cubre toda la pantalla sin perder proporciones */
-    background-position: center; /* Centra la imagen de fondo */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-  }
-  
+  background-color: #1a1a1a; /* Fondo oscuro */
+  background-size: cover; /* Cubre toda la pantalla sin perder proporciones */
+  background-position: center; /* Centra la imagen de fondo */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  color: #39ff14; /* Color de texto verde neón */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden; /* Evita el desplazamiento horizontal */
+}
+
+.full-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1a1a1a; /* Fondo oscuro */
+  padding: 20px; /* Añade padding alrededor del contenido */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-link.active {
+  color: #00ff00 !important; /* Color verde neón al estar activo */
+}
+
+.text-neon-green {
+  color: #39ff14 !important; /* Color verde neón */
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+}
+
+.bg-dark {
+  background-color: #1a1a1a !important; /* Fondo oscuro */
+}
+
+.border-neon-green {
+  border-color: #39ff14 !important; /* Borde verde neón */
+}
+
+.spinner-border {
+  color: #39ff14 !important; /* Color verde neón para el spinner */
+}

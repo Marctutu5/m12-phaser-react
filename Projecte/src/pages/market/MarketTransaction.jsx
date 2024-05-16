@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Table, Alert, Spinner } from 'react-bootstrap';
+import { Table, Alert, Spinner } from 'react-bootstrap';
 import AuthService from '../../auth/AuthService';
+import './css/MarketTransaction.css';
 
 const MarketTransaction = () => {
   const [transactions, setTransactions] = useState([]);
@@ -26,11 +27,11 @@ const MarketTransaction = () => {
   }, []);
 
   return (
-    <Container className="mt-3">
-      <h2 className="text-center mb-4">Transaction History</h2>
+    <div className="full-page mt-3">
+      <h2 className="text-center mb-4 text-neon-green font-orbitron">Transaction History</h2>
       {loading ? (
         <div className="text-center mt-3">
-          <Spinner animation="border" role="status">
+          <Spinner animation="border" role="status" className="text-neon-green">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
@@ -38,9 +39,9 @@ const MarketTransaction = () => {
         <>
           {error && <Alert variant="danger">{error}</Alert>}
           {transactions.length === 0 ? (
-            <p className="text-center">No transactions available.</p>
+            <p className="text-center text-neon-green">No transactions available.</p>
           ) : (
-            <Table striped bordered hover>
+            <Table striped bordered hover variant="dark" className="text-neon-green">
               <thead>
                 <tr>
                   <th>#</th>
@@ -62,7 +63,6 @@ const MarketTransaction = () => {
                     <td>{transaction.seller.name}</td>
                     <td>${transaction.price}</td>
                     <td>{new Date(transaction.created_at).toLocaleString()}</td>
-                    {/* Agrega más información de la transacción según tu estructura de datos */}
                   </tr>
                 ))}
               </tbody>
@@ -70,7 +70,7 @@ const MarketTransaction = () => {
           )}
         </>
       )}
-    </Container>
+    </div>
   );
 };
 

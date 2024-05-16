@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from '../../auth/AuthService';
-import { Container, Row, Col, Card, Button, Form, InputGroup, Spinner } from 'react-bootstrap';
+import { Row, Col, Card, Button, Form, InputGroup, Spinner } from 'react-bootstrap';
 import './css/MarketBuy.css';
 
 const MarketBuy = () => {
   const [listings, setListings] = useState([]);
   const [quantities, setQuantities] = useState({});
-  const [loading, setLoading] = useState(true); // Nuevo estado para controlar la carga
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -47,22 +47,22 @@ const MarketBuy = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <h1 className="text-center mb-4">Listings Available for Purchase</h1>
+    <div className="full-page mt-5">
+      <h1 className="text-center mb-4 text-neon-green font-orbitron">Listings Available for Purchase</h1>
       {loading ? ( // Mostrar spinner mientras se cargan los datos
         <div className="text-center mt-3">
-          <Spinner animation="border" role="status">
+          <Spinner animation="border" role="status" className="text-neon-green">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
       ) : (
         <>
           {error && <p className="text-danger">{error}</p>}
-          <Row>
+          <Row class="w-100">
             {listings.map(listing => (
-              <Col md={4} key={listing.id} className="mb-4">
-                <Card className="h-100">
-                  <Card.Img variant="top" src={listing.item.photo} className="p-3"/>
+              <Col md={4} key={listing.id} className="mb-4 w-100">
+                <Card className="h-100 bg-dark text-neon-green border-neon-green">
+                  <Card.Img variant="top" src={listing.item.photo} className="p-3 coin-img"/>
                   <Card.Body>
                     <Card.Title>{listing.item.name}</Card.Title>
                     <Card.Text>Price: ${listing.price} per unit</Card.Text>
@@ -87,7 +87,7 @@ const MarketBuy = () => {
           </Row>
         </>
       )}
-    </Container>
+    </div>
   );
 };
 

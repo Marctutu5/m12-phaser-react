@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from '../../auth/AuthService';
-import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
-import './css/MarketSell.css'
+import { Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
+import './css/MarketSell.css';
 
 const MarketSell = () => {
   const [backpack, setBackpack] = useState([]);
@@ -10,7 +10,7 @@ const MarketSell = () => {
     quantity: '',
     price: ''
   });
-  const [loading, setLoading] = useState(true); // Nuevo estado para controlar la carga
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -50,11 +50,11 @@ const MarketSell = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <h1 className="text-center">Sell Your Items</h1>
+    <div className="full-page mt-5">
+      <h1 className="text-center text-neon-green font-orbitron">Sell Your Items</h1>
       {loading ? (
         <div className="text-center mt-3">
-          <Spinner animation="border" role="status">
+          <Spinner animation="border" role="status" className="text-neon-green">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
@@ -62,16 +62,17 @@ const MarketSell = () => {
         <>
           {error && <Alert variant="danger">{error}</Alert>}
           {success && <Alert variant="success">{success}</Alert>}
-          <Row>
+          <Row class="w-100">
             {backpack.map((item) => (
-              <Col xs={12} sm={6} md={4} lg={3} className="mb-4" key={item.item.id}>
-                <Card className={selectedItem === item ? "selected-item" : ""} onClick={() => setSelectedItem(item)}>
-                  <Card.Img variant="top" src={item.item.photo} alt={item.item.name} />
+              <Col xs={12} sm={4} md={2} lg={3} key={item.item.id} className="mb-4 w-100">
+                <Card
+                  className={`h-100 bg-dark text-neon-green border-neon-green ${selectedItem === item ? "selected-item" : ""}`}
+                  onClick={() => setSelectedItem(item)}
+                >
+                  <Card.Img variant="top" src={item.item.photo} alt={item.item.name} className="coin-img"/>
                   <Card.Body>
                     <Card.Title>{item.item.name}</Card.Title>
-                    <Card.Text>
-                      Available: {item.quantity}
-                    </Card.Text>
+                    <Card.Text>Available: {item.quantity}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
@@ -80,33 +81,35 @@ const MarketSell = () => {
           {selectedItem && (
             <Form onSubmit={handleSubmit} className="mt-3">
               <Form.Group className="mb-3">
-                <Form.Label>Quantity</Form.Label>
+                <Form.Label className="text-neon-green">Quantity</Form.Label>
                 <Form.Control
                   type="number"
                   name="quantity"
                   value={listingData.quantity}
                   onChange={handleInputChange}
                   min="1"
-                  max={selectedItem.quantity}  // Asegura que no se puede ingresar un número mayor al disponible
+                  max={selectedItem.quantity}
                   required
+                  className="bg-dark text-neon-green border-neon-green"
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Price per unit ($)</Form.Label>
+                <Form.Label className="text-neon-green">Price per unit ($)</Form.Label>
                 <Form.Control
                   type="text"
                   name="price"
                   value={listingData.price}
                   onChange={handleInputChange}
                   required
+                  className="bg-dark text-neon-green border-neon-green"
                 />
               </Form.Group>
-              <Button variant="primary" type="submit">Create Listing</Button>
+              <Button variant="primary" type="submit" className="bg-neon-green text-dark border-neon-green">Create Listing</Button>
             </Form>
           )}
         </>
       )}
-    </Container>
+    </div>
   );
 };
 

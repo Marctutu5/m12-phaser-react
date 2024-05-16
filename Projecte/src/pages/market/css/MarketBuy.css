@@ -1,14 +1,34 @@
-/* MarketBuy.css */
-.card {
-    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
-    border: none;
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.full-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1a1a1a; /* Fondo oscuro para toda la página */
+  padding: 20px; /* Añade padding alrededor del contenido */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.card-img-top {
-    object-fit: cover;
-    height: 200px;
+.text-neon-green {
+  color: #39ff14 !important; /* Color verde neón */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+  font-weight: bold;
 }
 
-.button {
-    width: 100%;
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+}
+
+.bg-dark {
+  background-color: #1a1a1a !important; /* Fondo oscuro */
+}
+
+.border-neon-green {
+  border-color: #39ff14 !important; /* Borde verde neón */
+}
+
+.coin-img {
+  max-height: 100%;
+  object-fit: cover;
 }

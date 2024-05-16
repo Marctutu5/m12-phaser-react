@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.auth-toggle-button {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.auth-toggle-link {
+  color: #39ff14 !important; /* Color verde neón */
+  font-family: 'Orbitron', sans-serif; /* Fuente de estilo gaming */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.auth-toggle-link:hover {
+  color: #00ff00 !important; /* Color verde neón más brillante al pasar el mouse */
+  text-decoration: underline;
+}
