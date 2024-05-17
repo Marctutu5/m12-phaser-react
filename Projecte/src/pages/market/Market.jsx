@@ -26,8 +26,8 @@ const Market = () => {
   }, []);
 
   return (
-    <div className="full-page mt-5">
-      <h1 className="text-center mb-4 text-neon-green font-orbitron">Market</h1>
+    <div className="mt-5">
+      <h1 className="text-center mb-4  text-neon-green font-orbitron">Market</h1>
       <Nav variant="tabs" className="mb-3 justify-content-center">
         <Nav.Item>
           <NavLink to="/market/buy" className="nav-link text-neon-green" activeClassName="active">

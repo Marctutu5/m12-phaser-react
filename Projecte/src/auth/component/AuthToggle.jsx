@@ -5,7 +5,7 @@ import './css/AuthToggle.css'; // Importa los estilos específicos para este com
 
 function AuthToggle({ isRegisterView }) {
   return (
-    <Button variant="link" className="auth-toggle-button">
+    <Button variant="link" className="mt-2 auth-toggle-button">
       {isRegisterView ? (
         <Link to="/login" className="auth-toggle-link">¿Ya tienes una cuenta? Iniciar sesión aquí</Link>
       ) : (

@@ -48,8 +48,8 @@ function Backpack({ userName }) {
               {wallet && (
                 <ListGroup variant="flush" className="text-neon-green">
                   <ListGroup.Item className="bg-dark border-neon-green">
-                    <h4>Wallet</h4>
-                    <p>Coins: {wallet.coins}$</p>
+                    <h4 className="text-neon-green">Wallet</h4>
+                    <p className="text-neon-green">Coins: {wallet.coins}$</p>
                   </ListGroup.Item>
                 </ListGroup>
               )}
@@ -57,7 +57,7 @@ function Backpack({ userName }) {
                 <Row>
                   <h4 className="mt-3 mb-3 font-orbitron">Backpack Items</h4>
                   {backpack.map((item) => (
-                    <Col xs={6} sm={4} md={3} lg={4} className="mb-4" key={item.item.id}>
+                    <Col xs={12} sm={4} md={3} lg={3} className="mb-4" key={item.item.id}>
                       <Card className="bg-dark text-neon-green border-neon-green">
                         <Card.Img
                           variant="top"
@@ -78,7 +78,7 @@ function Backpack({ userName }) {
                 <Row>
                   <h4 className="mt-3 mb-3 font-orbitron">Your Fissurials</h4>
                   {userFissurials.map((uf) => (
-                    <Col xs={6} sm={4} md={3} className="mb-4" key={uf.fissurial.id}>
+                    <Col xs={12} sm={12} md={6} lg={6} className="mb-4" key={uf.fissurial.id}>
                       <Card className="bg-dark text-neon-green border-neon-green">
                         <Card.Img
                           variant="top"

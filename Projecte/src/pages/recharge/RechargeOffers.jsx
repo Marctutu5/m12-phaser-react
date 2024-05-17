@@ -15,7 +15,7 @@ const coinPackages = [
 
 function RechargeOffers() {
     return (
-        <div className="full-page">
+        <div className="">
             <h2 className="text-center mt-4 mb-4 text-neon-green font-orbitron">Recharge Offers</h2>
             <Row xs={1} md={2} lg={3} className="g-4">
                 {coinPackages.map((coinPackage, idx) => (

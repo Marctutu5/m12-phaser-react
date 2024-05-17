@@ -31,7 +31,7 @@ function Fissurials() {
               {userFissurials.length > 0 ? (
                 <Row>
                   {userFissurials.map((userFissurial) => (
-                    <Col xs={6} sm={4} md={3} className="mb-4" key={userFissurial.id}>
+                    <Col xs={12} sm={6} md={4} lg={3} className="mb-4" key={userFissurial.id}>
                       <Card className="bg-dark text-neon-green border-neon-green">
                         <Card.Img
                           variant="top"

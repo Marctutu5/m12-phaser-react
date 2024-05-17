@@ -25,10 +25,10 @@ const RechargeTransactions = () => {
     }, []);
 
     return (
-        <div className="full-page mt-3">
+        <div className="">
             <h2 className="text-center mb-4 text-neon-green font-orbitron">Recharge History</h2>
             {loading ? (
-                <div className="text-center mt-3">
+                <div className="text-center">
                     <Spinner animation="border" role="status" className="text-neon-green">
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>

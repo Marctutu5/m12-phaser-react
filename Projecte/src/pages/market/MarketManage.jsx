@@ -35,7 +35,7 @@ const MarketManage = () => {
   };
 
   return (
-    <div className="full-page mt-5">
+    <div className="mt-5 px-4 lg:px-16">
       <h1 className="text-center text-neon-green font-orbitron">Manage Your Listings</h1>
       {loading ? ( // Mostrar spinner mientras se cargan los datos
         <div className="text-center mt-3">
@@ -46,10 +46,10 @@ const MarketManage = () => {
       ) : (
         <>
           {error && <Alert variant="danger">{error}</Alert>}
-          <Row class='w-100'>
+          <Row class="w-100">
             {listings.map(listing => (
-              <Col xs={12} sm={4} md={2} lg={3} className="mb-4 w-100" key={listing.id}>
-                <Card className="listing-card bg-dark text-neon-green border-neon-green">
+              <Col xs={12} sm={6} md={4} lg={3} className="mb-4" key={listing.id}>
+                <Card className="h-100 listing-card bg-dark text-neon-green border-neon-green">
                   <Card.Img variant="top" src={listing.item.photo || 'default_image_url.jpg'} alt={listing.item.name} className="coin-img"/>
                   <Card.Body>
                     <Card.Title>{listing.item.name}</Card.Title>

@@ -50,7 +50,7 @@ const MarketSell = () => {
   };
 
   return (
-    <div className="full-page mt-5">
+    <div className="mt-5 px-4 lg:px-16">
       <h1 className="text-center text-neon-green font-orbitron">Sell Your Items</h1>
       {loading ? (
         <div className="text-center mt-3">
@@ -64,7 +64,7 @@ const MarketSell = () => {
           {success && <Alert variant="success">{success}</Alert>}
           <Row class="w-100">
             {backpack.map((item) => (
-              <Col xs={12} sm={4} md={2} lg={3} key={item.item.id} className="mb-4 w-100">
+              <Col xs={12} sm={6} md={4} lg={3} key={item.item.id} className="mb-4">
                 <Card
                   className={`h-100 bg-dark text-neon-green border-neon-green ${selectedItem === item ? "selected-item" : ""}`}
                   onClick={() => setSelectedItem(item)}

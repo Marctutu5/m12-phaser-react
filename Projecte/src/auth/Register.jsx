@@ -70,7 +70,7 @@ function Register() {
             />
           </Form.Group>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label className="text-neon-green">Email</Form.Label>
+            <Form.Label className="mt-2 text-neon-green">Email</Form.Label>
             <Form.Control
               type="email"
               placeholder="Ingrese su email"
@@ -81,7 +81,7 @@ function Register() {
             />
           </Form.Group>
           <Form.Group controlId="formBasicPassword">
-            <Form.Label className="text-neon-green">Password</Form.Label>
+            <Form.Label className="mt-2 text-neon-green">Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Ingrese su contraseña"
@@ -96,7 +96,7 @@ function Register() {
             onClick={handleRegister}
             disabled={loading}
             block
-            className="bg-neon-green text-dark border-neon-green"
+            className="mt-4 bg-neon-green text-dark border-neon-green"
           >
             {loading ? 'Registrando...' : 'Registrarse'}
           </Button>

@@ -37,7 +37,7 @@ const MarketBuy = () => {
     const quantity = quantities[listingId];
     try {
       const transactionData = await AuthService.createTransaction(listingId, quantity);
-      alert('Compra realizada con éxito: ' + JSON.stringify(transactionData));
+      alert('¡Compra realizada con éxito!');
       const updatedListings = await AuthService.getListings(true);
       setListings(updatedListings);
     } catch (error) {
@@ -47,10 +47,10 @@ const MarketBuy = () => {
   };
 
   return (
-    <div className="full-page mt-5">
+    <div className="mt-5 px-4 lg:px-16">
       <h1 className="text-center mb-4 text-neon-green font-orbitron">Listings Available for Purchase</h1>
       {loading ? ( // Mostrar spinner mientras se cargan los datos
-        <div className="text-center mt-3">
+        <div className="text-center">
           <Spinner animation="border" role="status" className="text-neon-green">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
@@ -60,7 +60,7 @@ const MarketBuy = () => {
           {error && <p className="text-danger">{error}</p>}
           <Row class="w-100">
             {listings.map(listing => (
-              <Col md={4} key={listing.id} className="mb-4 w-100">
+              <Col xs={12} sm={6} md={4} lg={3} key={listing.id} className="mb-4">
                 <Card className="h-100 bg-dark text-neon-green border-neon-green">
                   <Card.Img variant="top" src={listing.item.photo} className="p-3 coin-img"/>
                   <Card.Body>

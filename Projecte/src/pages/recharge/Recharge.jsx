@@ -5,7 +5,7 @@ import './css/Recharge.css'; // Importa el archivo CSS
 
 const Recharge = () => {
   return (
-    <div className="full-page mt-5">
+    <div className="mt-5 px-4 lg:px-16">
       <h1 className="text-center mb-4 text-neon-green font-orbitron">Recharge</h1>
       <Nav variant="tabs" className="mb-3 justify-content-center">
         <Nav.Item>
