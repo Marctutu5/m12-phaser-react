@@ -46,3 +46,12 @@ body {
 .spinner-border {
   color: #39ff14 !important; /* Color verde neón para el spinner */
 }
+
+  
+#game-container {
+  display: none;
+}
+
+.game #game-container {
+  display: block
+}

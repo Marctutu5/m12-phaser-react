@@ -4,11 +4,21 @@ import AuthService from '../../auth/AuthService';
 let player = ""
 let count = 0
 let pie ="izquierdo"
+let UserFissurial
+let Fissurials
+let move = true
 
+var battle2
+var battle1
+var backgroundMusic
 
 export default class MainScene extends Scene {
 
     items = [];
+
+    getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
 
     collectItem(player, item, collider) {
         // Obtener las coordenadas del jugador y del ítem
@@ -146,42 +156,120 @@ export default class MainScene extends Scene {
         return newItem;
     }
 
-    movePlayer(deltaX, deltaY) {
-        this.canMove = false; 
-        this.tweens.add({
-            targets: player,
-            x: player.x + deltaX,
-            y: player.y + deltaY,
-            duration: 300, 
-            onComplete: () => {
-                console.log(player.x, player.y)
-                this.canMove = true;
-                if (pie == "izquierdo"){
-                    pie = "derecho"
-                }else if (pie == "derecho"){
-                    pie = "izquierdo"
-                }
-                
-            }
+    stopBattleMusic(loose) {
+        if (battle2.isPlaying){
+            battle2.stop();
+        } else if (battle1.isPlaying){
+            battle1.stop();
+        }
+        backgroundMusic.play();
+        if (loose){
+            console.log(loose, "looose")
+            player.body.position.x = 632;
+            player.body.position.y = 464;
+            this.tweens.add({
+                targets: player,
+                x: 632,
+                y: 464,
+                duration: 0
+            });
+        }
+        this.time.delayedCall(500, () => {
+            AuthService.updatePosition(player.x, player.y, 1);
         });
     }
-    movePlayerRun(deltaX, deltaY) {
-        this.canMove = false;
-        this.tweens.add({
-            targets: player,
-            x: player.x + deltaX,
-            y: player.y + deltaY,
-            duration: 180,
-            onComplete: () => {
-                this.canMove = true;
-                if (pie == "izquierdo"){
-                    pie = "derecho"
-                }else if (pie == "derecho"){
-                    pie = "izquierdo"
-                }
+
+    movePlayer(deltaX, deltaY) {
+        if (move == true) {
+            this.canMove = false; 
+            this.tweens.add({
+                targets: player,
+                x: player.x + deltaX,
+                y: player.y + deltaY,
+                duration: 300, 
+                onComplete: () => {
+                    
+                    const playerTileX = Math.floor(player.x / this.map.tileWidth);
+                    const playerTileY = Math.floor(player.y / this.map.tileHeight);
+                    const grass = this.map.getTileAt(playerTileX, playerTileY, true, 'Longgrass');
                 
-            }
-        });
+                    // Si el jugador está sobre la Longgrass y no hay un diálogo abierto
+                    if (grass && grass.index !== -1 && !this.dialogOpen) {
+            
+                        const pelea = this.getRandomInt(4)
+                        console.log(pelea)
+                        // Iniciar la escena de batalla
+                        if (pelea==3){
+                            move = false
+                            this.scene.pause('MainScene')
+                            backgroundMusic.stop();
+                            battle1.play();
+                            battle1.on('complete', () => {
+                                battle2.play();
+                            });
+            
+                            this.scene.launch('BattleScene', { UserFissurial, Fissurials, previousScene: this.scene });
+            
+                        }
+                    }
+
+                    console.log(player.x, player.y)
+                    this.canMove = true;
+                    if (pie == "izquierdo"){
+                        pie = "derecho"
+                    }else if (pie == "derecho"){
+                        pie = "izquierdo"
+                    }
+                    
+                }
+            });
+        }
+        move = true
+    }
+    movePlayerRun(deltaX, deltaY) {
+        if (move == true) {
+            this.canMove = false;
+            this.tweens.add({
+                targets: player,
+                x: player.x + deltaX,
+                y: player.y + deltaY,
+                duration: 180,
+                onComplete: () => {
+                    const playerTileX = Math.floor(player.x / this.map.tileWidth);
+                    const playerTileY = Math.floor(player.y / this.map.tileHeight);
+                    const grass = this.map.getTileAt(playerTileX, playerTileY, true, 'Longgrass');
+                
+                    // Si el jugador está sobre la Longgrass y no hay un diálogo abierto
+                    if (grass && grass.index !== -1 && !this.dialogOpen) {
+            
+                        const pelea = this.getRandomInt(4)
+                        console.log(pelea)
+                        // Iniciar la escena de batalla
+                        if (pelea==3){
+                            move = false
+                            this.scene.pause('MainScene')
+                            backgroundMusic.stop();
+                            battle1.play();
+                            battle1.on('complete', () => {
+                                battle2.play();
+                            });
+            
+                            this.scene.launch('BattleScene', { UserFissurial, Fissurials, previousScene: this.scene });
+            
+                        }
+                    }
+                    this.canMove = true;
+                    if (pie == "izquierdo"){
+                        pie = "derecho"
+                    }else if (pie == "derecho"){
+                        pie = "izquierdo"
+                    }
+                    
+                }
+            });
+        }
+        move = true
+
     }
 
     constructor() {
@@ -199,11 +287,20 @@ export default class MainScene extends Scene {
         this.positionData = positionData;
         this.collectedItems = data.collectedItems;
         this.MapItemCords = data.MapItemCords;
+        this.userFissurial = data.userFissurial;
+        this.Fissurials = data.Fissurials;
+
     }
 
     preload() {
+        console.log(this.userFissurial)
+        UserFissurial = this.userFissurial[0];
+        Fissurials = this.Fissurials;
+        console.log(UserFissurial, UserFissurial.id, UserFissurial.fissurial.name)
 
         this.load.audio('backgroundMusic', 'assets/far_away_town.mp3');
+        this.load.audio('battle1', 'assets/battle.mp3');
+        this.load.audio('battle2', 'assets/battle2.mp3');
         this.cameras.main.setBackgroundColor('#000000');
         // Carga del tileset y del archivo JSON del mapa
         this.load.image('tileset', 'assets/fullextruded2.png');
@@ -224,12 +321,14 @@ export default class MainScene extends Scene {
     }
 
     create() {
-        this.scene.start('BattleScene')
+
         this.saveConfirmationDialog = new SaveConfirmationDialog(this);      
-        this.backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
+        backgroundMusic = this.sound.add('backgroundMusic', { loop: true });
+        battle1 = this.sound.add('battle1', { loop: false });
+        battle2 = this.sound.add('battle2', { loop: true });
 
         // Iniciar la reproducción de la música de fondo
-        this.backgroundMusic.play();
+        backgroundMusic.play();
 
         // Creación del mapa basado en el archivo JSON cargado
         const map = this.make.tilemap({ key: 'map' });
@@ -250,11 +349,11 @@ export default class MainScene extends Scene {
         const OverlapLayer = map.createLayer('Overlap', tileset, 0, 0).setDepth(10);
         const Overlap2Layer = map.createLayer('Overlap2', tileset, 256, 256).setDepth(10);
 
-       
         player = this.physics.add.sprite(player.x,player.y,'prota')
         const { x, y, scene } = this.positionData;
         player.x = x
         player.y = y
+        console.log("Usuari creat a la posició " + x + ", "+ y)
 
 
 
@@ -436,6 +535,7 @@ export default class MainScene extends Scene {
     update() {
         var cursors = this.input.keyboard.createCursorKeys();
         var shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+
         for (const Item of this.items) {
             this.collectItem(player, Item);
         }

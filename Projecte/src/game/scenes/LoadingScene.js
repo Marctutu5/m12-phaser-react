@@ -1,16 +1,31 @@
 import Phaser from 'phaser';
 import AuthService from '../../auth/AuthService';
 import { cloneElement } from 'react';
-let positionData
 let startscene1 = false
 let startscene2 = false
 let startscene3 = false
-let collectedItems
-let MapItemCords
-
-
+let startscene4 = false
+let startscene5 = false
+let positionData = undefined
+let collectedItems = undefined
+let MapItemCords = undefined
+let userFissurial = undefined
+let Fissurials = undefined
 
 export default class LoadingScene extends Phaser.Scene {
+
+    reset(){
+        startscene1 = false
+        startscene2 = false
+        startscene3 = false
+        startscene4 = false
+        startscene5 = false
+        positionData = undefined
+        collectedItems = undefined
+        MapItemCords = undefined
+        userFissurial = undefined
+        Fissurials = undefined
+    };
 
     showCollectedItems = async () => {
     try {
@@ -61,14 +76,50 @@ export default class LoadingScene extends Phaser.Scene {
         }
     };
 
+    getUserFissurial = async () => {
+        try {
+            userFissurial = await AuthService.getUserFissurial();
+            // Verificar si se recibió la posición del usuario
+            if (userFissurial) {
+
+                
+                startscene4 = true
+                // Hacer algo con las coordenadas x e y y el nombre de la escena
+    
+            } else {
+                console.log("No se recibió el fissurial");
+            }
+        } catch (error) {
+            console.error('Error al obtener el fissurial:', error);
+        }
+    };
+
+    getAllFissurials = async () => {
+        try {
+            console.log('fis',Fissurials)
+            Fissurials = await AuthService.getFissurials();
+            // Verificar si se recibió la posición del usuario
+            if (Fissurials) {
+
+                
+                startscene5 = true
+                // Hacer algo con las coordenadas x e y y el nombre de la escena
+    
+            } else {
+                console.log("No se recibió el fissurial");
+            }
+        } catch (error) {
+            console.error('Error al obtener el fissurial:', error);
+        }
+    };
+
+
     constructor() {
         super({ key: 'LoadingScene' });
     }
 
     preload(){
-        this.showPosition()
-        this.showCollectedItems()
-        this.showMapItemCords()
+
         // Configura el fondo negro
         this.cameras.main.setBackgroundColor('#000000');
 
@@ -83,13 +134,21 @@ export default class LoadingScene extends Phaser.Scene {
 
     }
     create(){
-
+        console.log('entra create loading scene')
+        this.reset()
+        // API
+        this.showPosition()
+        this.showCollectedItems()
+        this.getAllFissurials()
+        this.showMapItemCords()
+        this.getUserFissurial()
     }
     update(){
-        console.log(startscene1, startscene2, startscene3)
-        if (startscene1 && startscene2 && startscene3){
-            console.log(positionData,collectedItems, MapItemCords)
-            this.scene.start('MainScene', { positionData, collectedItems, MapItemCords });
+        console.log(startscene1, startscene2, startscene3, startscene4, startscene5)
+        if (startscene1 && startscene2 && startscene3 && startscene4 && startscene5){
+            console.log(positionData,collectedItems, MapItemCords, Fissurials)
+            this.scene.start('MainScene', { positionData, collectedItems, MapItemCords, userFissurial, Fissurials });
+            
         }
 
     }

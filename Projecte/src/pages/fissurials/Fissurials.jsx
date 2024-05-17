@@ -4,6 +4,11 @@ import { Row, Col, Card, Spinner } from 'react-bootstrap';
 import './css/Fissurials.css'; // Importa el archivo CSS
 
 function Fissurials() {
+  const gameContainer = document.querySelector('#game-container');
+  if (gameContainer){
+  gameContainer.style.display = 'none';
+
+  }
   const [userFissurials, setUserFissurials] = useState([]);
   const [loading, setLoading] = useState(true);
 
