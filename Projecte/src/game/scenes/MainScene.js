@@ -173,6 +173,8 @@ export default class MainScene extends Scene {
                 y: 464,
                 duration: 0
             });
+        } else {
+            AuthService.updateWallet(250)
         }
         this.time.delayedCall(500, () => {
             AuthService.updatePosition(player.x, player.y, 1);
