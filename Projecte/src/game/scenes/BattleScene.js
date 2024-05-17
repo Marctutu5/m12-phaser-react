@@ -4,7 +4,7 @@ let fissurial_quant;
 let enemy_fissurial;
 let fissurial_random;
 let currentMessage = null;
-
+let loose
 
 
 export default class BattleScene extends Scene {
@@ -43,7 +43,7 @@ export default class BattleScene extends Scene {
     init(data) {
         this.UserFissurial = data.UserFissurial;
         this.Fissurials = data.Fissurials;
-        this.attackCooldown = false;
+        this.attackCooldown = true;
         this.previousScene = data.previousScene;
     }
 
@@ -113,6 +113,9 @@ export default class BattleScene extends Scene {
         this.showMessage('¡Ha aparecido un ' + enemy_fissurial.name + ' salvaje!');
         this.time.delayedCall(2000, () => {
             this.showMessage('Que quieres hacer?');
+            this.time.delayedCall(1000, () => {
+                this.attackCooldown = false;
+            });
         });
 
         this.attackButtons = [];
@@ -202,18 +205,22 @@ export default class BattleScene extends Scene {
         }
         
         if (this.enemyHealthNow <= 0) {
+            this.attackCooldown = true;
+
             setTimeout(() => {  
                 console.log('¡Enemigo derrotado!');
                 
                 this.scene.stop('BattleScene');
                 const mainScene = this.scene.get('MainScene');
-                mainScene.stopBattleMusic();
+                loose = false
+                mainScene.stopBattleMusic(loose);
                 this.scene.resume('MainScene');
                 return;
             }, 6000);
         }else {
             this.time.delayedCall(3000, this.performEnemyAttack, [], this);
         }
+       
 
     }
 
@@ -284,11 +291,13 @@ export default class BattleScene extends Scene {
         
 
         if (this.playerHealthNow <= 0) {
+            this.attackCooldown = true;
             setTimeout(() => {  
                 console.log('¡Jugador derrotado!');
                 this.scene.stop('BattleScene');
                 const mainScene = this.scene.get('MainScene');
-                mainScene.stopBattleMusic();
+                loose = true
+                mainScene.stopBattleMusic(loose);
                 this.scene.resume('MainScene');
                 return;
             }, 6000);

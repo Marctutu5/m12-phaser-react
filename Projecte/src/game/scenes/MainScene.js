@@ -156,13 +156,27 @@ export default class MainScene extends Scene {
         return newItem;
     }
 
-    stopBattleMusic() {
+    stopBattleMusic(loose) {
         if (battle2.isPlaying){
             battle2.stop();
         } else if (battle1.isPlaying){
             battle1.stop();
         }
         backgroundMusic.play();
+        if (loose){
+            console.log(loose, "looose")
+            player.body.position.x = 632;
+            player.body.position.y = 464;
+            this.tweens.add({
+                targets: player,
+                x: 632,
+                y: 464,
+                duration: 0
+            });
+        }
+        this.time.delayedCall(500, () => {
+            AuthService.updatePosition(player.x, player.y, 1);
+        });
     }
 
     movePlayer(deltaX, deltaY) {
